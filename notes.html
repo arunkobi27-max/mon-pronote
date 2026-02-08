@@ -1,27 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <script>
-    // Appliquer le mode et la couleur dès le chargement
-    (function() {
-        const mode = localStorage.getItem('themeMode');
-        const color = localStorage.getItem('themeColor');
-        if (mode === 'light') document.documentElement.classList.add('light-mode');
-        if (color) document.documentElement.style.setProperty('--accent', color);
-    })();
-</script>
-
-<style>
-    /* Ajoute ceci dans ton bloc <style> sur CHAQUE page */
-    .light-mode {
-        --bg-color: #f1f5f9;
-        --card-bg: #ffffff;
-        --text-color: #1e293b;
-    }
-    body { transition: background 0.3s, color 0.3s; }
-</style>
 <head>
     <meta charset="UTF-8">
-    <title>Mes Notes - Style Moderne</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Notes - Scolarité Connect</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
@@ -29,7 +11,7 @@
             --bg-color: #0f172a;
             --card-bg: #1e293b;
             --text-color: #f8fafc;
-            --accent: #6366f1;
+            --accent: #6366f1; /* Changera via les réglages */
             --gold: #fbbf24;
         }
 
@@ -41,88 +23,79 @@
             display: flex; flex-direction: column; align-items: center;
         }
 
-        /* En-tête avec boutons */
+        /* --- HEADER & NAVIGATION --- */
         .header-nav { 
             display: flex; 
             justify-content: space-between; 
             width: 100%; 
-            max-width: 1100px; 
+            max-width: 900px; 
             margin-bottom: 30px; 
         }
 
         .btn { 
-            padding: 12px 25px; border-radius: 50px; cursor: pointer; 
+            padding: 10px 20px; border-radius: 50px; cursor: pointer; 
             text-decoration: none; font-weight: 600; border: none; transition: 0.3s;
-            font-size: 0.9em;
+            font-size: 0.85em;
         }
-        .btn-retour { background: var(--accent); color: white; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
+        .btn-retour { background: var(--accent); color: white; }
         .btn-pdf { background: #10b981; color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
-        .btn:hover { transform: scale(1.05); opacity: 0.9; }
+        .btn:hover { transform: translateY(-3px); opacity: 0.9; }
 
-        .title-section { text-align: center; margin-bottom: 40px; }
-        h1 { font-size: 1.8em; margin: 0; color: #818cf8; letter-spacing: 1px; }
-        .moyenne-generale { font-size: 2.2em; font-weight: 600; color: var(--gold); margin-top: 10px; text-shadow: 0 0 20px rgba(251, 191, 36, 0.3); }
+        /* --- RÉSUMÉ --- */
+        .summary { text-align: center; margin-bottom: 40px; }
+        .summary h1 { font-size: 1.5em; color: var(--accent); margin: 0; text-transform: uppercase; }
+        .moyenne-generale { font-size: 2.5em; font-weight: 600; color: var(--gold); margin-top: 10px; }
 
-        /* Grille des Notes */
+        /* --- GRILLE DES MATIÈRES --- */
         .notes-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
             width: 100%;
-            max-width: 1100px;
+            max-width: 900px;
         }
 
         .matiere-card {
             background: var(--card-bg);
             border-radius: 20px;
             padding: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-left: 6px solid var(--m-color);
             cursor: pointer;
+            transition: 0.3s ease;
             position: relative;
-            overflow: hidden;
         }
 
-        /* L'indicateur de couleur sur le côté */
-        .matiere-card::before {
-            content: "";
-            position: absolute;
-            left: 0; top: 0; bottom: 0;
-            width: 8px;
-            background-color: var(--matiere-color);
+        .matiere-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            background: #24334d;
         }
 
-        .matiere-card:hover, .matiere-card.active {
-            transform: translateY(-10px);
-            border-color: var(--matiere-color);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px var(--matiere-color);
-        }
+        .card-header { display: flex; justify-content: space-between; align-items: center; }
+        .matiere-name { font-weight: 600; font-size: 1.1em; }
+        .matiere-note { font-size: 1.3em; font-weight: 600; color: var(--m-color); }
 
-        .matiere-info { display: flex; justify-content: space-between; align-items: center; }
-        .matiere-name { font-weight: 600; font-size: 1.1em; letter-spacing: 0.5px; }
-        .moyenne-val { font-size: 1.4em; font-weight: 600; color: var(--matiere-color); }
-
-        /* Détails des notes cachés */
-        .details-list {
-            margin-top: 20px;
+        /* --- DÉTAILS CACHÉS --- */
+        .details {
+            margin-top: 15px;
             padding-top: 15px;
             border-top: 1px solid rgba(255,255,255,0.1);
-            display: none;
-            animation: fadeIn 0.4s ease;
+            display: none; /* Caché par défaut */
+            animation: slideDown 0.3s ease;
         }
 
-        .matiere-card.active .details-list { display: block; }
+        .matiere-card.active .details { display: block; }
 
         .note-row {
             display: flex;
             justify-content: space-between;
             margin-bottom: 8px;
-            font-size: 0.9em;
+            font-size: 0.85em;
             color: #94a3b8;
         }
-        .note-val { color: var(--text-color); font-weight: 600; }
+        .val-note { color: var(--text-color); font-weight: 600; }
 
-        @keyframes fadeIn {
+        @keyframes slideDown {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
@@ -132,105 +105,85 @@
 
     <div class="header-nav">
         <a href="menu.html" class="btn btn-retour">⬅ MENU</a>
-        <button onclick="telechargerBulletin()" class="btn btn-pdf">📥 TÉLÉCHARGER PDF</button>
+        <button onclick="genererPDF()" class="btn btn-pdf">📥 BULLETIN PDF</button>
     </div>
 
-    <div class="title-section">
-        <h1>RÉSULTATS TRIMESTRE 2</h1>
+    <div class="summary" id="bulletin-header">
+        <h1>Résultats Trimestre 2</h1>
         <div class="moyenne-generale">13,01 / 20</div>
     </div>
 
-    <div class="notes-grid" id="bulletin-content">
+    <div class="notes-grid" id="notes-list">
         
-        <div class="matiere-card" style="--matiere-color: #92d050;" onclick="this.classList.toggle('active')">
-            <div class="matiere-info">
+        <div class="matiere-card" style="--m-color: #92d050;" onclick="this.classList.toggle('active')">
+            <div class="card-header">
                 <span class="matiere-name">MATHÉMATIQUES</span>
-                <span class="moyenne-val">16,45</span>
+                <span class="matiere-note">16,45</span>
             </div>
-            <div class="details-list">
-                <div class="note-row"><span>DS4</span><span class="note-val">17,25/20</span></div>
-                <div class="note-row"><span>Calcul littéral 2</span><span class="note-val">9,25/10</span></div>
-                <div class="note-row"><span>Calcul littéral 1</span><span class="note-val">9,75/10</span></div>
-                <div class="note-row"><span>Interro Stat</span><span class="note-val">14,50/15</span></div>
+            <div class="details">
+                <div class="note-row"><span>DS4</span> <span class="val-note">17,25/20</span></div>
+                <div class="note-row"><span>Calcul littéral 2</span> <span class="val-note">9,25/10</span></div>
+                <div class="note-row"><span>Interro Stat</span> <span class="val-note">14,50/15</span></div>
             </div>
         </div>
 
-        <div class="matiere-card" style="--matiere-color: #f4b183;" onclick="this.classList.toggle('active')">
-            <div class="matiere-info">
+        <div class="matiere-card" style="--m-color: #f4b183;" onclick="this.classList.toggle('active')">
+            <div class="card-header">
                 <span class="matiere-name">ESPAGNOL LV2</span>
-                <span class="moyenne-val">17,20</span>
+                <span class="matiere-note">17,20</span>
             </div>
-            <div class="details-list">
-                <div class="note-row"><span>Contrôle Janvier</span><span class="note-val">17,00/20</span></div>
-                <div class="note-row"><span>Teatro</span><span class="note-val">5,00/5</span></div>
-                <div class="note-row"><span>Participation</span><span class="note-val">15,00/20</span></div>
+            <div class="details">
+                <div class="note-row"><span>Contrôle Janvier</span> <span class="val-note">17,00/20</span></div>
+                <div class="note-row"><span>Teatro (Oral)</span> <span class="val-note">5,00/5</span></div>
             </div>
         </div>
 
-        <div class="matiere-card" style="--matiere-color: #a9d18e;" onclick="this.classList.toggle('active')">
-            <div class="matiere-info">
+        <div class="matiere-card" style="--m-color: #a9d18e;" onclick="this.classList.toggle('active')">
+            <div class="card-header">
                 <span class="matiere-name">PHYSIQUE-CHIMIE</span>
-                <span class="moyenne-val">17,00</span>
+                <span class="matiere-note">17,00</span>
             </div>
-            <div class="details-list">
-                <div class="note-row"><span>Investissement</span><span class="note-val">20,00/20</span></div>
-                <div class="note-row"><span>Contrôle Énergie</span><span class="note-val">16,50/20</span></div>
-                <div class="note-row"><span>Note de cahier</span><span class="note-val">20,00/20</span></div>
-            </div>
-        </div>
-
-        <div class="matiere-card" style="--matiere-color: #a8d08d;" onclick="this.classList.toggle('active')">
-            <div class="matiere-info">
-                <span class="matiere-name">TECHNOLOGIE</span>
-                <span class="moyenne-val">15,95</span>
-            </div>
-            <div class="details-list">
-                <div class="note-row"><span>Évaluation Gantt</span><span class="note-val">25,00/25</span></div>
-                <div class="note-row"><span>Code Binaire</span><span class="note-val">20,00/20</span></div>
-                <div class="note-row"><span>Brevet Blanc 1</span><span class="note-val">13,00/24</span></div>
+            <div class="details">
+                <div class="note-row"><span>Investissement</span> <span class="val-note">20,00/20</span></div>
+                <div class="note-row"><span>Contrôle Énergie</span> <span class="val-note">16,50/20</span></div>
             </div>
         </div>
 
-        <div class="matiere-card" style="--matiere-color: #adb9ca;" onclick="this.classList.toggle('active')">
-            <div class="matiere-info">
-                <span class="matiere-name">HISTOIRE-GÉOGRAPHIE</span>
-                <span class="moyenne-val">12,83</span>
-            </div>
-            <div class="details-list">
-                <div class="note-row"><span>Rédaction 2GM</span><span class="note-val">17,00/20</span></div>
-                <div class="note-row"><span>Brevet Blanc</span><span class="note-val">8,50/20</span></div>
-                <div class="note-row"><span>Travail de groupe</span><span class="note-val">16,50/20</span></div>
-            </div>
-        </div>
-
-        <div class="matiere-card" style="--matiere-color: #d99594;" onclick="this.classList.toggle('active')">
-            <div class="matiere-info">
+        <div class="matiere-card" style="--m-color: #d99594;" onclick="this.classList.toggle('active')">
+            <div class="card-header">
                 <span class="matiere-name">ANGLAIS LV1</span>
-                <span class="moyenne-val">11,75</span>
+                <span class="matiere-note">11,75</span>
             </div>
-            <div class="details-list">
-                <div class="note-row"><span>Propositions Infinitives</span><span class="note-val">10,00/10</span></div>
-                <div class="note-row"><span>Vocabulaire</span><span class="note-val">7,00/10</span></div>
-                <div class="note-row"><span>Test</span><span class="note-val">12,00/20</span></div>
+            <div class="details">
+                <div class="note-row"><span>Vocabulaire</span> <span class="val-note">7,00/10</span></div>
+                <div class="note-row"><span>Test Grammaire</span> <span class="val-note">12,00/20</span></div>
             </div>
         </div>
 
     </div>
 
     <script>
-        function telechargerBulletin() {
-            const element = document.getElementById('bulletin-content');
-            const opt = {
+        // 1. Appliquer le thème des réglages
+        const savedColor = localStorage.getItem('themeColor');
+        if (savedColor) {
+            document.documentElement.style.setProperty('--accent', savedColor);
+        }
+
+        // 2. Fonction PDF
+        function genererPDF() {
+            const element = document.body;
+            const options = {
                 margin: 10,
-                filename: 'Mon_Bulletin_Notes.pdf',
+                filename: 'Mon_Bulletin_T2.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, backgroundColor: "#0f172a" },
+                html2canvas: { scale: 2, backgroundColor: '#0f172a' },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
-            html2pdf().set(opt).from(element).save();
+            html2pdf().set(options).from(element).save();
         }
     </script>
 </body>
 </html>
+
 
 
