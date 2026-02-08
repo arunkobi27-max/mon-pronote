@@ -1,137 +1,187 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <script>
-    // Appliquer le mode et la couleur dès le chargement
-    (function() {
-        const mode = localStorage.getItem('themeMode');
-        const color = localStorage.getItem('themeColor');
-        if (mode === 'light') document.documentElement.classList.add('light-mode');
-        if (color) document.documentElement.style.setProperty('--accent', color);
-    })();
-</script>
-
-<style>
-    /* Ajoute ceci dans ton bloc <style> sur CHAQUE page */
-    .light-mode {
-        --bg-color: #f1f5f9;
-        --card-bg: #ffffff;
-        --text-color: #1e293b;
-    }
-    body { transition: background 0.3s, color 0.3s; }
-</style>
 <head>
     <meta charset="UTF-8">
-    <title>Justifier une absence</title>
+    <title>Mon Carnet - Absences & Retards</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Styles déjà existants préservés */
         :root {
             --bg-color: #0f172a;
             --card-bg: #1e293b;
             --text-color: #f8fafc;
             --accent: #6366f1;
+            --absence: #2dd4bf;
+            --retard: #f59e0b;
             --done: #10b981;
         }
 
-        /* --- STYLE DU FORMULAIRE DE JUSTIFICATION --- */
-        .btn-justifier {
-            background: linear-gradient(135deg, var(--accent), #4f46e5);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            margin-top: 15px;
-            width: 100%;
+        .light-mode {
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+        }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-color);
+            margin: 0; padding: 20px;
+            display: flex; flex-direction: column; align-items: center;
             transition: 0.3s;
         }
 
-        .btn-justifier:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4); }
+        .header-nav { width: 100%; max-width: 800px; margin-bottom: 20px; }
+        .btn-retour { background: var(--accent); color: white; border: none; padding: 10px 25px; border-radius: 50px; cursor: pointer; text-decoration: none; font-weight: 600; }
 
-        .form-group { margin-bottom: 15px; text-align: left; }
-        label { display: block; font-size: 0.8em; color: #94a3b8; margin-bottom: 5px; }
+        /* --- RÉSUMÉ HAUT --- */
+        .stats-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 15px; width: 100%; max-width: 800px; margin-bottom: 20px;
+        }
+        .stat-card {
+            background: var(--card-bg); padding: 20px; border-radius: 20px;
+            text-align: center; border: 1px solid rgba(255,255,255,0.05);
+        }
+        .stat-val { font-size: 1.8em; font-weight: 600; display: block; }
+        .val-abs { color: var(--absence); }
+        .val-ret { color: var(--retard); }
+
+        /* --- GRAPHIQUE --- */
+        .chart-section {
+            width: 100%; max-width: 800px; background: var(--card-bg);
+            border-radius: 20px; padding: 20px; margin-bottom: 20px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .chart-wrapper { width: 200px; height: 200px; position: relative; }
+
+        /* --- LISTE MATIÈRES --- */
+        .list-container { width: 100%; max-width: 800px; background: var(--card-bg); border-radius: 20px; overflow: hidden; }
+        .matiere-row {
+            padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s;
+        }
+        .matiere-row:hover { background: rgba(99, 102, 241, 0.05); }
+
+        /* --- MODALE --- */
+        .modal { 
+            display: none; position: fixed; z-index: 100; left:0; top:0; width:100%; height:100%; 
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); align-items: center; justify-content: center; 
+        }
+        .modal-content { background: var(--card-bg); padding: 25px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; }
+        .btn-action { background: var(--accent); color: white; border: none; padding: 12px; width: 100%; border-radius: 12px; margin-top: 15px; cursor: pointer; font-weight: 600; }
         
-        select, textarea {
-            width: 100%;
-            background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            color: white;
-            padding: 10px;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .success-msg {
-            display: none;
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--done);
-            padding: 10px;
-            border-radius: 10px;
-            font-size: 0.9em;
-            margin-top: 10px;
-            border: 1px solid var(--done);
-        }
+        .success-anim { display: none; color: var(--done); font-weight: 600; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <button class="btn-justifier" onclick="showJustifyForm()">JUSTIFIER CETTE ABSENCE</button>
+    <script>
+        // Appliquer le thème avant l'affichage
+        const mode = localStorage.getItem('themeMode');
+        const color = localStorage.getItem('themeColor');
+        if (mode === 'light') document.body.classList.add('light-mode');
+        if (color) document.documentElement.style.setProperty('--accent', color);
+    </script>
 
-    <div id="justifyModal" class="modal">
+    <div class="header-nav">
+        <a href="menu.html" class="btn-retour">⬅ MENU</a>
+    </div>
+
+    <h2>📊 Mon Carnet</h2>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-val val-abs">08h00</span>
+            <span style="font-size: 0.8em; opacity: 0.7;">ABSENCES</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-val val-ret">2</span>
+            <span style="font-size: 0.8em; opacity: 0.7;">RETARDS</span>
+        </div>
+    </div>
+
+    <div class="chart-section">
+        <div class="chart-wrapper">
+            <canvas id="absChart"></canvas>
+        </div>
+        <p style="font-size: 0.8em; color: #94a3b8; margin-top: 10px;">Clique sur une matière pour justifier</p>
+    </div>
+
+    <div class="list-container">
+        <div class="matiere-row" onclick="openAbsence('ARTS PLASTIQUES', '2h', '📅 03 Octobre (1h) <br> 📅 12 Novembre (1h)')">
+            <span>Arts Plastiques</span>
+            <b style="color: var(--absence);">2h</b>
+        </div>
+        <div class="matiere-row" onclick="openAbsence('HISTOIRE-GÉO', '2h', '📅 29 Septembre (1h) <br> 📅 15 Janvier (1h)')">
+            <span>Histoire-Géographie</span>
+            <b style="color: var(--absence);">2h</b>
+        </div>
+        <div class="matiere-row" onclick="openAbsence('ANGLAIS', '1h', '📅 02 Février (1h)')">
+            <span>Anglais LV1</span>
+            <b style="color: var(--absence);">1h</b>
+        </div>
+        <div class="matiere-row" onclick="openAbsence('EPS', '1h', '📅 10 Décembre (1h)')">
+            <span>EPS</span>
+            <b style="color: var(--absence);">1h</b>
+        </div>
+    </div>
+
+    <div id="absModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">Justifier l'absence</div>
+            <h3 id="m-title" style="margin-top: 0; color: var(--accent);">Matière</h3>
+            <p id="m-dates" style="font-size: 0.9em; opacity: 0.8;"></p>
+            <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 15px 0;">
             
-            <form id="formJustifier" onsubmit="sendJustification(event)">
-                <div class="form-group">
-                    <label>Motif de l'absence</label>
-                    <select required>
-                        <option value="">Choisir un motif...</option>
-                        <option value="maladie">Maladie / Santé</option>
-                        <option value="transport">Problème de transport</option>
-                        <option value="famille">Raison familiale</option>
-                        <option value="rdv">Rendez-vous médical</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Message complémentaire</label>
-                    <textarea rows="3" placeholder="Ex: J'avais rendez-vous chez le dentiste..."></textarea>
-                </div>
-
-                <button type="submit" class="btn-justifier" style="background: var(--done);">ENVOYER À LA VIE SCOLAIRE</button>
-            </form>
-
-            <div id="successMsg" class="success-msg">
-                ✅ Votre justification a été transmise avec succès !
+            <div id="form-area">
+                <select id="motif" style="width: 100%; padding: 10px; border-radius: 8px; background: var(--bg-color); color: var(--text-color); border: 1px solid var(--accent);">
+                    <option value="">Choisir un motif...</option>
+                    <option>Maladie</option>
+                    <option>Transport</option>
+                    <option>Famille</option>
+                </select>
+                <button class="btn-action" onclick="sendJustif()">JUSTIFIER</button>
             </div>
 
-            <button class="btn-close" onclick="closeJustifyModal()" style="background: transparent; border: 1px solid #334155; margin-top: 10px;">ANNULER</button>
+            <div id="success" class="success-anim">✅ Transmis avec succès !</div>
+            <button onclick="closeModal()" style="background:none; border:none; color:#94a3b8; margin-top:15px; cursor:pointer;">Fermer</button>
         </div>
     </div>
 
     <script>
-        function showJustifyForm() {
-            document.getElementById('justifyModal').style.display = 'flex';
+        // GRAPHIQUE
+        const ctx = document.getElementById('absChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Arts P.', 'H-Géo', 'Anglais', 'Autres'],
+                datasets: [{
+                    data: [2, 2, 1, 3],
+                    backgroundColor: ['#2dd4bf', '#3b82f6', '#fb7185', '#94a3b8'],
+                    borderWidth: 0
+                }]
+            },
+            options: { cutout: '80%', plugins: { legend: { display: false } } }
+        });
+
+        // FONCTIONS MODALE
+        function openAbsence(name, total, dates) {
+            document.getElementById('m-title').innerText = name + " (" + total + ")";
+            document.getElementById('m-dates').innerHTML = dates;
+            document.getElementById('absModal').style.display = 'flex';
+            document.getElementById('form-area').style.display = 'block';
+            document.getElementById('success').style.display = 'none';
         }
 
-        function closeJustifyModal() {
-            document.getElementById('justifyModal').style.display = 'none';
-            document.getElementById('formJustifier').style.display = 'block';
-            document.getElementById('successMsg').style.display = 'none';
-        }
+        function closeModal() { document.getElementById('absModal').style.display = 'none'; }
 
-        function sendJustification(event) {
-            event.preventDefault();
+        function sendJustif() {
+            const motif = document.getElementById('motif').value;
+            if(!motif) return alert("Choisis un motif !");
             
-            // Simulation d'envoi
-            document.getElementById('formJustifier').style.display = 'none';
-            document.getElementById('successMsg').style.display = 'block';
-            
-            // Fermeture automatique après 2 secondes
-            setTimeout(() => {
-                closeJustifyModal();
-            }, 2000);
+            document.getElementById('form-area').style.display = 'none';
+            document.getElementById('success').style.display = 'block';
+            setTimeout(closeModal, 1500);
         }
     </script>
 </body>
