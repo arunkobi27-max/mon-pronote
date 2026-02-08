@@ -1,0 +1,42 @@
+<<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion Pronote</title>
+    <style>
+        body { font-family: sans-serif; background: #2c3e50; color: white; text-align: center; padding-top: 100px; }
+        .login-card { background: white; color: #333; padding: 30px; border-radius: 10px; display: inline-block; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        input { display: block; width: 200px; margin: 10px auto; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        button { background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #2ecc71; }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <h2>Espace Élève</h2>
+        <input type="text" id="user" placeholder="Identifiant">
+        <input type="password" id="pass" placeholder="Mot de passe">
+        <button onclick="verifier()">Se connecter</button>
+        <p id="erreur" style="color: red;"></p>
+    </div>
+
+    <script>
+        function verifier() {
+            // On récupère ce que l'utilisateur a écrit
+            var nom = document.getElementById("user").value;
+            var code = document.getElementById("pass").value;
+
+            // ON VÉRIFIE ICI (Identifiant: Arunjan / Mot de passe: 11022011)
+            if (nom == "Arunjan" && code == "11022011") {
+                // Si c'est bon, on va vers le menu
+                window.location.href = "menu.html";
+            } else {
+                // Si c'est faux, on affiche un message
+                document.getElementById("erreur").innerText = "Identifiant ou mot de passe faux !";
+            }
+        }
+    </script>
+
+</body>
+</html>

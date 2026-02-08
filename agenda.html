@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Agenda - Collège</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f0f2f5; padding: 20px; text-align: center; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        
+        .event {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 8px solid #3498db;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .date-box {
+            background: #2c3e50;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            min-width: 60px;
+            margin-right: 20px;
+        }
+
+        .date-box .jour { font-size: 1.2em; font-weight: bold; display: block; }
+        .date-box .mois { font-size: 0.8em; text-transform: uppercase; }
+
+        .info { text-align: left; }
+        .info h3 { margin: 0; color: #2c3e50; font-size: 1.1em; }
+        .info p { margin: 5px 0 0; color: #7f8c8d; }
+
+        /* Couleurs pour différents types d'événements */
+        .sortie { border-left-color: #e67e22; } /* Orange */
+        .examen { border-left-color: #e74c3c; } /* Rouge */
+        .reunion { border-left-color: #2ecc71; } /* Vert */
+
+        .btn-retour { background: #34495e; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <button class="btn-retour" onclick="window.location.href='menu.html'">⬅ Retour au Menu</button>
+
+    <div class="container">
+        <h1>📖 Agenda du Collège</h1>
+
+        <div class="event examen">
+            <div class="date-box">
+                <span class="jour">12</span>
+                <span class="mois">Fév.</span>
+            </div>
+            <div class="info">
+                <h3>Brevet Blanc - Maths</h3>
+                <p>Salle 204 - 08h30 à 10h30</p>
+            </div>
+        </div>
+
+        <div class="event sortie">
+            <div class="date-box">
+                <span class="jour">15</span>
+                <span class="mois">Fév.</span>
+            </div>
+            <div class="info">
+                <h3>Sortie au Musée</h3>
+                <p>Départ en bus à 09h00</p>
+            </div>
+        </div>
+
+        <div class="event reunion">
+            <div class="date-box">
+                <span class="jour">20</span>
+                <span class="mois">Fév.</span>
+            </div>
+            <div class="info">
+                <h3>Conseil de classe</h3>
+                <p>17h30 - Présence des délégués</p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

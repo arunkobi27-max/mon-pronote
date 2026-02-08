@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mes Devoirs</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f0f2f5; padding: 20px; text-align: center; }
+        .container { max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 15px; shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; }
+        
+        /* Style de la liste de devoirs */
+        .liste-devoirs { text-align: left; list-style: none; padding: 0; }
+        .devoir-item { 
+            display: flex; 
+            align-items: center; 
+            padding: 15px; 
+            border-bottom: 1px solid #eee;
+            font-size: 1.1em;
+        }
+        
+        /* La case à cocher */
+        input[type="checkbox"] { margin-right: 15px; transform: scale(1.5); cursor: pointer; }
+        
+        /* Quand on coche, le texte devient gris et barré */
+        input[type="checkbox"]:checked + span {
+            text-decoration: line-through;
+            color: #bdc3c7;
+        }
+
+        .matiere { font-weight: bold; min-width: 100px; display: inline-block; }
+        .date { font-size: 0.8em; color: #e74c3c; margin-left: auto; }
+        
+        .btn-retour { background: #34495e; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <button class="btn-retour" onclick="window.location.href='menu.html'">⬅ Retour au Menu</button>
+
+    <div class="container">
+        <h1>📝 Devoirs à faire</h1>
+        
+        <ul class="liste-devoirs">
+            <li class="devoir-item">
+                <input type="checkbox">
+                <span class="matiere">MATHS :</span>
+                <span>Exercice 12 p. 45</span>
+                <span class="date">Pour demain</span>
+            </li>
+            
+            <li class="devoir-item">
+                <input type="checkbox">
+                <span class="matiere">FRANÇAIS :</span>
+                <span>Lire le chapitre 3</span>
+                <span class="date">Pour mardi</span>
+            </li>
+            
+            <li class="devoir-item">
+                <input type="checkbox">
+                <span class="matiere">ANGLAIS :</span>
+                <span>Apprendre le vocabulaire</span>
+                <span class="date">Pour jeudi</span>
+            </li>
+
+            <li class="devoir-item">
+                <input type="checkbox">
+                <span class="matiere">SVT :</span>
+                <span>Dessiner la cellule</span>
+                <span class="date">Pour vendredi</span>
+            </li>
+        </ul>
+    </div>
+
+</body>
+</html>
