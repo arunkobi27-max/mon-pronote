@@ -134,3 +134,22 @@ th, td {
 @media print {
     .btn-retour, .btn-pdf { display: none; }
 }
+
+body {
+    /* Remplace l'URL ci-dessous par celle de ton choix */
+    background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)), 
+                url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* L'image ne bouge pas quand on scrolle */
+    margin: 0;
+    min-height: 100vh;
+}
+
+/* On rend les cartes un peu plus transparentes pour l'effet "verre" */
+.login-card, .menu-item, .matiere-card, .devoir-card {
+    background: rgba(30, 41, 59, 0.7) !important; /* On ajoute de la transparence */
+    backdrop-filter: blur(12px); /* L'effet de flou magique */
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
