@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Justifier une absence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Styles déjà existants préservés */
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent: #6366f1;
+            --done: #10b981;
+        }
+
+        /* --- STYLE DU FORMULAIRE DE JUSTIFICATION --- */
+        .btn-justifier {
+            background: linear-gradient(135deg, var(--accent), #4f46e5);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 15px;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        .btn-justifier:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4); }
+
+        .form-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; font-size: 0.8em; color: #94a3b8; margin-bottom: 5px; }
+        
+        select, textarea {
+            width: 100%;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            color: white;
+            padding: 10px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .success-msg {
+            display: none;
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--done);
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 0.9em;
+            margin-top: 10px;
+            border: 1px solid var(--done);
+        }
+    </style>
+</head>
+<body>
+
+    <button class="btn-justifier" onclick="showJustifyForm()">JUSTIFIER CETTE ABSENCE</button>
+
+    <div id="justifyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">Justifier l'absence</div>
+            
+            <form id="formJustifier" onsubmit="sendJustification(event)">
+                <div class="form-group">
+                    <label>Motif de l'absence</label>
+                    <select required>
+                        <option value="">Choisir un motif...</option>
+                        <option value="maladie">Maladie / Santé</option>
+                        <option value="transport">Problème de transport</option>
+                        <option value="famille">Raison familiale</option>
+                        <option value="rdv">Rendez-vous médical</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Message complémentaire</label>
+                    <textarea rows="3" placeholder="Ex: J'avais rendez-vous chez le dentiste..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-justifier" style="background: var(--done);">ENVOYER À LA VIE SCOLAIRE</button>
+            </form>
+
+            <div id="successMsg" class="success-msg">
+                ✅ Votre justification a été transmise avec succès !
+            </div>
+
+            <button class="btn-close" onclick="closeJustifyModal()" style="background: transparent; border: 1px solid #334155; margin-top: 10px;">ANNULER</button>
+        </div>
+    </div>
+
+    <script>
+        function showJustifyForm() {
+            document.getElementById('justifyModal').style.display = 'flex';
+        }
+
+        function closeJustifyModal() {
+            document.getElementById('justifyModal').style.display = 'none';
+            document.getElementById('formJustifier').style.display = 'block';
+            document.getElementById('successMsg').style.display = 'none';
+        }
+
+        function sendJustification(event) {
+            event.preventDefault();
+            
+            // Simulation d'envoi
+            document.getElementById('formJustifier').style.display = 'none';
+            document.getElementById('successMsg').style.display = 'block';
+            
+            // Fermeture automatique après 2 secondes
+            setTimeout(() => {
+                closeJustifyModal();
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
