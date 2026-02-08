@@ -2,113 +2,174 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Mon Emploi du Temps Dynamique</title>
+    <title>Mon Planning Interactif Complet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f0f2f5; padding: 20px; }
-        .btn-retour { background: #34495e; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-block; margin-bottom: 20px; }
-        
-        table { width: 100%; border-collapse: collapse; background: white; border: 1px solid #ccc; }
-        th, td { border: 1px solid #ccc; padding: 10px; text-align: center; height: 50px; font-size: 0.9em; position: relative; }
-        th { background-color: #f8f9fa; font-weight: bold; }
-        
-        .heure { background-color: #f8f9fa; width: 80px; font-weight: bold; }
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent: #6366f1;
+        }
 
-        /* Tes couleurs */
-        .techno { background-color: #a8d08d; }
-        .maths { background-color: #92d050; }
-        .francais { background-color: #deeaf6; }
-        .histoire { background-color: #adb9ca; }
-        .anglais { background-color: #d99594; }
-        .physique { background-color: #a9d18e; }
-        .musique { background-color: #ffe699; }
-        .espagnol { background-color: #f4b183; }
-        .eps { background-color: #e7e6e6; }
-        .svt { background-color: #c5e0b4; }
-        .arts { background-color: #ffd966; }
-        .pause { background-color: #e9ecef; color: #999; }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-color);
+            margin: 0; padding: 20px;
+            display: flex; flex-direction: column; align-items: center;
+        }
 
-        /* LA CLASSE QUI FAIT BRILLER */
-        .cours-actuel {
-            outline: 4px solid #f1c40f; /* Contour jaune d'or */
+        .btn-retour { 
+            background: var(--accent); color: white; border: none; 
+            padding: 12px 30px; border-radius: 50px; cursor: pointer; 
+            text-decoration: none; margin-bottom: 25px; transition: 0.3s;
+            font-weight: 600; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        h2 { margin-bottom: 30px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #818cf8; }
+
+        /* Grille du planning */
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: 80px repeat(5, 1fr);
+            gap: 12px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .header-day { text-align: center; font-weight: 600; padding: 15px; color: #94a3b8; background: rgba(255,255,255,0.05); border-radius: 10px; }
+
+        /* Style des cases matières */
+        .matiere-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 12px;
+            min-height: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+            position: relative;
+        }
+
+        /* Effet au toucher/clic */
+        .matiere-card:hover, .matiere-card.active {
+            transform: scale(1.08) translateY(-5px);
             z-index: 10;
-            box-shadow: 0 0 15px #f1c40f;
-            animation: pulse 2s infinite;
-            font-weight: bold;
-            transform: scale(1.02);
+            box-shadow: 0 10px 30px var(--glow-color);
+            border-color: var(--glow-color);
+            background: var(--glow-color);
+            color: #1a1a2e;
         }
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 5px #f1c40f; }
-            50% { box-shadow: 0 0 20px #f1c40f; }
-            100% { box-shadow: 0 0 5px #f1c40f; }
-        }
+        .matiere-card span { font-size: 0.8em; font-weight: 600; line-height: 1.2; }
+        .details { display: none; font-size: 0.7em; margin-top: 8px; font-weight: 400; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 5px; }
+        
+        /* Affichage des détails si actif */
+        .matiere-card.active .details { display: block; }
+
+        .time-label { display: flex; align-items: center; justify-content: center; font-size: 0.85em; color: #64748b; font-weight: 600; }
+
+        /* Couleurs inspirées de ton image avec Glow */
+        .techno { --glow-color: #a8d08d; }
+        .maths { --glow-color: #92d050; }
+        .francais { --glow-color: #deeaf6; }
+        .histoire { --glow-color: #adb9ca; }
+        .anglais { --glow-color: #d99594; }
+        .physique { --glow-color: #a9d18e; }
+        .musique { --glow-color: #ffe699; }
+        .espagnol { --glow-color: #f4b183; }
+        .eps { --glow-color: #e7e6e6; }
+        .svt { --glow-color: #c5e0b4; }
+        .arts { --glow-color: #ffd966; }
+        .vide { opacity: 0.15; cursor: default; }
+
     </style>
 </head>
 <body>
 
-    <a href="menu.html" class="btn-retour">⬅ Retour au Menu</a>
-    <h2 id="info-temps" style="text-align: center; color: #2c3e50;"></h2>
+    <a href="menu.html" class="btn-retour">⬅ TABLEAU DE BORD</a>
+    <h2>Emploi du temps</h2>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Heure</th>
-                <th class="col-jour" data-jour="1">Lundi</th>
-                <th class="col-jour" data-jour="2">Mardi</th>
-                <th class="col-jour" data-jour="3">Mercredi</th>
-                <th class="col-jour" data-jour="4">Jeudi</th>
-                <th class="col-jour" data-jour="5">Vendredi</th>
-            </tr>
-        </thead>
-        <tbody id="corps-emploi">
-            <tr data-heure="8">
-                <td class="heure">08h00</td>
-                <td class="techno" data-j="1">TECHNOLOGIE</td>
-                <td class="francais" data-j="2">FRANCAIS</td>
-                <td class="maths" data-j="3">MATHEMATIQUES</td>
-                <td class="maths" data-j="4">MATHEMATIQUES</td>
-                <td class="pause" data-j="5">————</td>
-            </tr>
-            <tr data-heure="9">
-                <td class="heure">09h00</td>
-                <td class="maths" data-j="1">MATHEMATIQUES</td>
-                <td class="techno" data-j="2">TECHNOLOGIE</td>
-                <td class="musique" data-j="3">EDUCATION MUSICALE</td>
-                <td class="francais" data-j="4">FRANCAIS</td>
-                <td class="anglais" data-j="5">ANGLAIS LV1</td>
-            </tr>
-            </tbody>
-    </table>
+    <div class="schedule-grid">
+        <div></div>
+        <div class="header-day">LUNDI</div>
+        <div class="header-day">MARDI</div>
+        <div class="header-day">MERCREDI</div>
+        <div class="header-day">JEUDI</div>
+        <div class="header-day">VENDREDI</div>
+
+        <div class="time-label">08h00</div>
+        <div class="matiere-card techno" onclick="toggle(this)"><span>TECHNOLOGIE</span><div class="details">Salle Techno • M. Robot</div></div>
+        <div class="matiere-card francais" onclick="toggle(this)"><span>FRANÇAIS</span><div class="details">Salle 204 • Mme Plume</div></div>
+        <div class="matiere-card maths" onclick="toggle(this)"><span>MATHÉMATIQUES</span><div class="details">Salle 302 • M. Calcul</div></div>
+        <div class="matiere-card maths" onclick="toggle(this)"><span>MATHÉMATIQUES</span><div class="details">Salle 302 • M. Calcul</div></div>
+        <div class="matiere-card vide"><span>—</span></div>
+
+        <div class="time-label">09h00</div>
+        <div class="matiere-card maths" onclick="toggle(this)"><span>MATHÉMATIQUES</span><div class="details">Salle 302</div></div>
+        <div class="matiere-card techno" onclick="toggle(this)"><span>TECHNOLOGIE</span><div class="details">Salle Techno</div></div>
+        <div class="matiere-card musique" onclick="toggle(this)"><span>MUSIQUE</span><div class="details">Salle Piano • Mme Note</div></div>
+        <div class="matiere-card francais" onclick="toggle(this)"><span>FRANÇAIS</span><div class="details">Salle 204</div></div>
+        <div class="matiere-card anglais" onclick="toggle(this)"><span>ANGLAIS LV1</span><div class="details">Labo Langues</div></div>
+
+        <div class="time-label">10h10</div>
+        <div class="matiere-card francais" onclick="toggle(this)"><span>FRANÇAIS</span><div class="details">Salle 204</div></div>
+        <div class="matiere-card physique" onclick="toggle(this)"><span>PHYSIQUE-CHIMIE</span><div class="details">Labo • M. Atome</div></div>
+        <div class="matiere-card francais" onclick="toggle(this)"><span>FRANÇAIS</span><div class="details">Salle 204</div></div>
+        <div class="matiere-card anglais" onclick="toggle(this)"><span>ANGLAIS LV1</span><div class="details">Salle 105</div></div>
+        <div class="matiere-card eps" onclick="toggle(this)"><span>E.P.S.</span><div class="details">Gymnase • Mme Sport</div></div>
+
+        <div class="time-label">11h05</div>
+        <div class="matiere-card histoire" onclick="toggle(this)"><span>HISTOIRE-GÉO</span><div class="details">Salle 201 • M. Monde</div></div>
+        <div class="matiere-card maths" onclick="toggle(this)"><span>MATHÉMATIQUES</span><div class="details">Salle 302</div></div>
+        <div class="matiere-card espagnol" onclick="toggle(this)"><span>ESPAGNOL LV2</span><div class="details">Salle 108 • Sr. Hola</div></div>
+        <div class="matiere-card svt" onclick="toggle(this)"><span>S.V.T.</span><div class="details">Salle Nature • Mme Fleur</div></div>
+        <div class="matiere-card histoire" onclick="toggle(this)"><span>HISTOIRE-GÉO</span><div class="details">Salle 201</div></div>
+
+        <div class="time-label">12h05</div>
+        <div class="matiere-card vide"><span>DÉJEUNER</span></div>
+        <div class="matiere-card vide"><span>DÉJEUNER</span></div>
+        <div class="matiere-card vide"><span>DÉJEUNER</span></div>
+        <div class="matiere-card vide"><span>DÉJEUNER</span></div>
+        <div class="matiere-card vide"><span>DÉJEUNER</span></div>
+
+        <div class="time-label">13h30</div>
+        <div class="matiere-card anglais" onclick="toggle(this)"><span>ANGLAIS LV1</span><div class="details">Salle 105</div></div>
+        <div class="matiere-card eps" onclick="toggle(this)"><span>E.P.S.</span><div class="details">Stade extérieur</div></div>
+        <div class="matiere-card vide"><span>—</span></div>
+        <div class="matiere-card espagnol" onclick="toggle(this)"><span>ESPAGNOL LV2</span><div class="details">Salle 108</div></div>
+        <div class="matiere-card arts" onclick="toggle(this)"><span>ARTS PLASTIQUES</span><div class="details">Atelier • Mme Pinceau</div></div>
+
+        <div class="time-label">14h30</div>
+        <div class="matiere-card francais" onclick="toggle(this)"><span>FRANÇAIS</span><div class="details">Salle 204</div></div>
+        <div class="matiere-card eps" onclick="toggle(this)"><span>E.P.S.</span><div class="details">Stade extérieur</div></div>
+        <div class="matiere-card vide"><span>—</span></div>
+        <div class="matiere-card histoire" onclick="toggle(this)"><span>HISTOIRE-GÉO</span><div class="details">Salle 201</div></div>
+        <div class="matiere-card histoire" onclick="toggle(this)"><span>HISTOIRE-GÉO</span><div class="details">Salle 201</div></div>
+
+        <div class="time-label">15h35</div>
+        <div class="matiere-card svt" onclick="toggle(this)"><span>S.V.T.</span><div class="details">Salle Nature</div></div>
+        <div class="matiere-card vide"><span>—</span></div>
+        <div class="matiere-card vide"><span>—</span></div>
+        <div class="matiere-card vide"><span>—</span></div>
+        <div class="matiere-card espagnol" onclick="toggle(this)"><span>ESPAGNOL LV2</span><div class="details">Salle 108</div></div>
+    </div>
 
     <script>
-        function mettreAJourPlanning() {
-            const maintenant = new Date();
-            const jour = maintenant.getDay(); // 1 = Lundi, 2 = Mardi...
-            const heure = maintenant.getHours();
-
-            // Nettoyer l'ancienne brillance
-            const anciens = document.querySelectorAll('.cours-actuel');
-            anciens.forEach(el => el.classList.remove('cours-actuel'));
-
-            // Trouver la case correspondante
-            if (jour >= 1 && jour <= 5) {
-                const ligneHeure = document.querySelector(`tr[data-heure="${heure}"]`);
-                if (ligneHeure) {
-                    const caseCours = ligneHeure.querySelector(`td[data-j="${jour}"]`);
-                    if (caseCours) {
-                        caseCours.classList.add('cours-actuel');
-                    }
-                }
+        function toggle(el) {
+            if (el.classList.contains('active')) {
+                el.classList.remove('active');
+            } else {
+                document.querySelectorAll('.matiere-card').forEach(c => c.classList.remove('active'));
+                el.classList.add('active');
             }
-            
-            document.getElementById('info-temps').innerText = "Nous sommes le " + maintenant.toLocaleDateString() + " à " + heure + "h";
         }
-
-        // Lancer la vérification au démarrage
-        mettreAJourPlanning();
-        // Vérifier toutes les minutes
-        setInterval(mettreAJourPlanning, 60000);
     </script>
 </body>
 </html>
-
