@@ -3,172 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scolarité Connect - RAKURUPAN Arunjan</title>
+    <title>Connexion - Scolarité Connect</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* --- VARIABLES & THEMES --- */
         :root {
             --bg-color: #0f172a;
             --card-bg: #1e293b;
-            --text-color: #f8fafc;
             --accent: #6366f1;
-            --sub-text: #94a3b8;
-            --loader-bg: #0f172a;
+            --text-color: #f8fafc;
         }
 
-        body.light-mode {
-            --bg-color: #f1f5f9;
-            --card-bg: #ffffff;
-            --text-color: #1e293b;
-            --sub-text: #64748b;
-            --loader-bg: #f1f5f9;
-        }
-
-        body { 
-            font-family: 'Poppins', sans-serif; 
-            background-color: var(--bg-color); 
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
             color: var(--text-color);
-            margin: 0; padding: 20px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            min-height: 100vh;
-            transition: background-color 0.4s, color 0.4s;
-            overflow-x: hidden;
+            margin: 0; height: 100vh;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        /* --- ÉCRAN DE CHARGEMENT (SPLASH SCREEN) --- */
-        #loader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: var(--loader-bg);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 1000; transition: opacity 0.6s ease;
-        }
-        .spinner {
-            width: 50px; height: 50px; border: 5px solid rgba(99, 102, 241, 0.2);
-            border-top: 5px solid var(--accent); border-radius: 50%;
-            animation: spin 1s linear infinite; margin-bottom: 20px;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        #loader.fade-out { opacity: 0; pointer-events: none; }
-
-        /* --- INTERFACE UTILISATEUR --- */
-        .theme-switch {
-            position: absolute; top: 20px; right: 20px;
-            background: var(--card-bg); border: 1px solid var(--accent);
-            padding: 10px; border-radius: 50px; cursor: pointer; font-size: 1.2em;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s; z-index: 10;
-        }
-
-        .user-header { text-align: center; margin-bottom: 40px; }
-        .user-avatar { 
-            width: 90px; height: 90px; border-radius: 50%; 
-            border: 3px solid var(--accent); margin-bottom: 10px;
-            object-fit: cover; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        h1 { margin: 0; font-size: 1.6em; color: var(--accent); letter-spacing: 0.5px; }
-        .sub-title { color: var(--sub-text); font-size: 0.9em; margin-top: 5px; }
-
-        /* --- GRILLE DU MENU --- */
-        .menu-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr);
-            gap: 18px; width: 100%; max-width: 500px;
-        }
-
-        .menu-item {
-            background: var(--card-bg); padding: 25px 15px; border-radius: 22px;
-            text-align: center; text-decoration: none; color: var(--text-color);
-            font-weight: 600; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .login-card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 25px;
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             border: 1px solid rgba(255,255,255,0.05);
-            display: flex; flex-direction: column; align-items: center; gap: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
-        .menu-item:hover {
-            transform: translateY(-8px); border-color: var(--accent);
-            box-shadow: 0 12px 24px rgba(99, 102, 241, 0.2);
-        }
+        .logo { font-size: 3em; margin-bottom: 10px; display: block; }
+        h2 { margin-bottom: 25px; color: var(--accent); }
 
-        .icon { font-size: 2.3em; }
-
-        /* Bordures colorées des sections */
-        .m-emploi { border-bottom: 5px solid #6366f1; }
-        .m-notes { border-bottom: 5px solid #10b981; }
-        .m-devoirs { border-bottom: 5px solid #f59e0b; }
-        .m-agenda { border-bottom: 5px solid #fb7185; }
-        .m-profil { grid-column: span 2; border-bottom: 5px solid #a855f7; }
+        .input-group { text-align: left; margin-bottom: 20px; }
+        label { display: block; font-size: 0.8em; color: #94a3b8; margin-bottom: 5px; margin-left: 5px; }
         
-        .m-logout { 
-            grid-column: span 2; border: none;
-            background: rgba(239, 68, 68, 0.1); color: #ef4444; 
-            margin-top: 10px; border-bottom: 5px solid #ef4444;
-            cursor: pointer; font-family: 'Poppins', sans-serif;
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
         }
-        .m-logout:hover { background: rgba(239, 68, 68, 0.2); }
 
+        input:focus { border-color: var(--accent); box-shadow: 0 0 10px rgba(99, 102, 241, 0.3); }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover { transform: scale(1.02); background: #4f46e5; }
+
+        #error-msg { color: #ef4444; font-size: 0.8em; margin-top: 15px; display: none; }
     </style>
 </head>
-<body id="body">
+<body>
 
-    <div id="loader">
-        <div class="spinner"></div>
-        <p style="font-weight: 600; color: var(--accent);">Scolarité Connect</p>
-    </div>
-
-    <button class="theme-switch" onclick="toggleTheme()" id="theme-btn">🌙</button>
-
-    <div class="user-header">
-        <img src="https://via.placeholder.com/90" alt="Avatar" class="user-avatar">
-        <h1>RAKURUPAN Arunjan</h1>
-        <p class="sub-title">Élève de 3ème • Collège George Sand</p>
-    </div>
-
-    <div class="menu-grid">
-        <a href="emploi.html" class="menu-item m-emploi"><span class="icon">📅</span> Emploi</a>
-        <a href="notes.html" class="menu-item m-notes"><span class="icon">📊</span> Notes</a>
-        <a href="devoirs.html" class="menu-item m-devoirs"><span class="icon">📝</span> Devoirs</a>
-        <a href="agenda.html" class="menu-item m-agenda"><span class="icon">🗓️</span> Agenda</a>
-        <a href="profil.html" class="menu-item m-profil"><span class="icon">👤</span> Mon Profil Étudiant</a>
+    <div class="login-card">
+        <span class="logo">🎓</span>
+        <h2>Scolarité Connect</h2>
         
-        <button onclick="logout()" class="menu-item m-logout">
-            <span class="icon" style="font-size: 1.5em;">🚪</span> Déconnexion
-        </button>
+        <div class="input-group">
+            <label>Identifiant</label>
+            <input type="text" id="username" placeholder="Arunjan">
+        </div>
+
+        <div class="input-group">
+            <label>Mot de passe</label>
+            <input type="password" id="password" placeholder="••••••••">
+        </div>
+
+        <button class="btn-login" onclick="checkLogin()">Se connecter</button>
+
+        <p id="error-msg">Identifiants incorrects. Réessaie !</p>
     </div>
 
     <script>
-        // --- GESTION DU LOADER ---
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('loader').classList.add('fade-out');
-            }, 1200); // Temps d'affichage du loader
-        });
+        function checkLogin() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
 
-        // --- GESTION DU THÈME ---
-        function toggleTheme() {
-            const body = document.getElementById('body');
-            const btn = document.getElementById('theme-btn');
-            body.classList.toggle('light-mode');
-            
-            if (body.classList.contains('light-mode')) {
-                btn.innerText = "☀️";
-                localStorage.setItem('theme', 'light');
+            // --- TES IDENTIFIANTS ICI ---
+            const correctUser = "Arunjan";
+            const correctPass = "1234"; 
+
+            if (user === correctUser && pass === correctPass) {
+                // Sauvegarde de la session (basique)
+                localStorage.setItem('isLoggedIn', 'true');
+                window.location.href = "menu.html";
             } else {
-                btn.innerText = "🌙";
-                localStorage.setItem('theme', 'dark');
-            }
-        }
-
-        // Charger le thème sauvegardé
-        if (localStorage.getItem('theme') === 'light') {
-            document.getElementById('body').classList.add('light-mode');
-            document.getElementById('theme-btn').innerText = "☀️";
-        }
-
-        // --- DÉCONNEXION ---
-        function logout() {
-            if(confirm("Voulez-vous fermer votre session ?")) {
-                document.getElementById('loader').classList.remove('fade-out');
-                setTimeout(() => {
-                    window.location.href = "about:blank";
-                }, 600);
+                const error = document.getElementById('error-msg');
+                error.style.display = 'block';
+                // Animation de secousse
+                document.querySelector('.login-card').animate([
+                    { transform: 'translateX(-5px)' },
+                    { transform: 'translateX(5px)' },
+                    { transform: 'translateX(0)' }
+                ], { duration: 200, iterations: 2 });
             }
         }
     </script>
