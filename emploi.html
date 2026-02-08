@@ -2,114 +2,113 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Mon Emploi du Temps</title>
+    <title>Mon Emploi du Temps Dynamique</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background-color: #f0f2f5; padding: 20px; }
         .btn-retour { background: #34495e; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-block; margin-bottom: 20px; }
         
         table { width: 100%; border-collapse: collapse; background: white; border: 1px solid #ccc; }
-        th, td { border: 1px solid #ccc; padding: 10px; text-align: center; height: 50px; font-size: 0.9em; }
-        th { background-color: #f8f9fa; font-weight: normal; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: center; height: 50px; font-size: 0.9em; position: relative; }
+        th { background-color: #f8f9fa; font-weight: bold; }
         
         .heure { background-color: #f8f9fa; width: 80px; font-weight: bold; }
+
+        /* Tes couleurs */
+        .techno { background-color: #a8d08d; }
+        .maths { background-color: #92d050; }
+        .francais { background-color: #deeaf6; }
+        .histoire { background-color: #adb9ca; }
+        .anglais { background-color: #d99594; }
+        .physique { background-color: #a9d18e; }
+        .musique { background-color: #ffe699; }
+        .espagnol { background-color: #f4b183; }
+        .eps { background-color: #e7e6e6; }
+        .svt { background-color: #c5e0b4; }
+        .arts { background-color: #ffd966; }
         .pause { background-color: #e9ecef; color: #999; }
 
-        /* Couleurs basées sur ton image */
-        .techno { background-color: #a8d08d; } /* Vert */
-        .maths { background-color: #92d050; } /* Vert vif */
-        .francais { background-color: #deeaf6; } /* Bleu très clair */
-        .histoire { background-color: #adb9ca; } /* Bleu gris */
-        .anglais { background-color: #d99594; } /* Rouge/Rose */
-        .physique { background-color: #a9d18e; } /* Vert moyen */
-        .musique { background-color: #ffe699; } /* Jaune */
-        .espagnol { background-color: #f4b183; } /* Orange/Saumon */
-        .eps { background-color: #e7e6e6; } /* Gris clair */
-        .svt { background-color: #c5e0b4; } /* Vert d'eau */
-        .arts { background-color: #ffd966; } /* Jaune orangé */
+        /* LA CLASSE QUI FAIT BRILLER */
+        .cours-actuel {
+            outline: 4px solid #f1c40f; /* Contour jaune d'or */
+            z-index: 10;
+            box-shadow: 0 0 15px #f1c40f;
+            animation: pulse 2s infinite;
+            font-weight: bold;
+            transform: scale(1.02);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 5px #f1c40f; }
+            50% { box-shadow: 0 0 20px #f1c40f; }
+            100% { box-shadow: 0 0 5px #f1c40f; }
+        }
     </style>
 </head>
 <body>
 
     <a href="menu.html" class="btn-retour">⬅ Retour au Menu</a>
+    <h2 id="info-temps" style="text-align: center; color: #2c3e50;"></h2>
 
     <table>
         <thead>
             <tr>
-                <th></th>
-                <th>lundi</th>
-                <th>mardi</th>
-                <th>mercredi</th>
-                <th>jeudi</th>
-                <th>vendredi</th>
+                <th>Heure</th>
+                <th class="col-jour" data-jour="1">Lundi</th>
+                <th class="col-jour" data-jour="2">Mardi</th>
+                <th class="col-jour" data-jour="3">Mercredi</th>
+                <th class="col-jour" data-jour="4">Jeudi</th>
+                <th class="col-jour" data-jour="5">Vendredi</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td class="heure">08h00-08h55</td>
-                <td class="techno">TECHNOLOGIE</td>
-                <td class="francais">FRANCAIS</td>
-                <td class="maths">MATHEMATIQUES</td>
-                <td class="maths">MATHEMATIQUES</td>
-                <td class="pause">————</td>
+        <tbody id="corps-emploi">
+            <tr data-heure="8">
+                <td class="heure">08h00</td>
+                <td class="techno" data-j="1">TECHNOLOGIE</td>
+                <td class="francais" data-j="2">FRANCAIS</td>
+                <td class="maths" data-j="3">MATHEMATIQUES</td>
+                <td class="maths" data-j="4">MATHEMATIQUES</td>
+                <td class="pause" data-j="5">————</td>
             </tr>
-            <tr>
-                <td class="heure">09h00-09h55</td>
-                <td class="maths">MATHEMATIQUES</td>
-                <td class="techno">TECHNOLOGIE</td>
-                <td class="musique">EDUCATION MUSICALE</td>
-                <td class="francais">FRANCAIS</td>
-                <td class="anglais">ANGLAIS LV1</td>
+            <tr data-heure="9">
+                <td class="heure">09h00</td>
+                <td class="maths" data-j="1">MATHEMATIQUES</td>
+                <td class="techno" data-j="2">TECHNOLOGIE</td>
+                <td class="musique" data-j="3">EDUCATION MUSICALE</td>
+                <td class="francais" data-j="4">FRANCAIS</td>
+                <td class="anglais" data-j="5">ANGLAIS LV1</td>
             </tr>
-            <tr>
-                <td class="heure">10h10-11h05</td>
-                <td class="francais">FRANCAIS</td>
-                <td class="physique">PHYSIQUE-CHIMIE</td>
-                <td class="francais">FRANCAIS</td>
-                <td class="anglais">ANGLAIS LV1</td>
-                <td class="eps">ED.PHYSIQUE & SPORT.</td>
-            </tr>
-            <tr>
-                <td class="heure">11h10-12h05</td>
-                <td class="histoire">HISTOIRE-GEOGRAPHIE</td>
-                <td class="maths">MATHEMATIQUES</td>
-                <td class="espagnol">ESPAGNOL LV2</td>
-                <td class="svt">SCIENCES VIE & TERRE</td>
-                <td class="histoire">HISTOIRE-GEOGRAPHIE</td>
-            </tr>
-            <tr>
-                <td class="heure">12h10</td>
-                <td class="pause">————</td>
-                <td class="pause">————</td>
-                <td class="pause">————</td>
-                <td class="pause">————</td>
-                <td class="pause">————</td>
-            </tr>
-            <tr>
-                <td class="heure">13h25-14h25</td>
-                <td class="anglais">ANGLAIS LV1</td>
-                <td class="eps">ED.PHYSIQUE & SPORT.</td>
-                <td class="pause">————</td>
-                <td class="espagnol">ESPAGNOL LV2</td>
-                <td class="arts">ARTS PLASTIQUES</td>
-            </tr>
-            <tr>
-                <td class="heure">14h30-15h25</td>
-                <td class="francais">FRANCAIS</td>
-                <td class="eps">ED.PHYSIQUE & SPORT.</td>
-                <td class="pause">————</td>
-                <td class="histoire">HISTOIRE-GEOGRAPHIE</td>
-                <td class="histoire">HISTOIRE-GEOGRAPHIE</td>
-            </tr>
-            <tr>
-                <td class="heure">15h35-16h30</td>
-                <td class="svt">SCIENCES VIE & TERRE</td>
-                <td class="pause">————</td>
-                <td class="pause">————</td>
-                <td class="pause">————</td>
-                <td class="espagnol">ESPAGNOL LV2</td>
-            </tr>
-        </tbody>
+            </tbody>
     </table>
 
+    <script>
+        function mettreAJourPlanning() {
+            const maintenant = new Date();
+            const jour = maintenant.getDay(); // 1 = Lundi, 2 = Mardi...
+            const heure = maintenant.getHours();
+
+            // Nettoyer l'ancienne brillance
+            const anciens = document.querySelectorAll('.cours-actuel');
+            anciens.forEach(el => el.classList.remove('cours-actuel'));
+
+            // Trouver la case correspondante
+            if (jour >= 1 && jour <= 5) {
+                const ligneHeure = document.querySelector(`tr[data-heure="${heure}"]`);
+                if (ligneHeure) {
+                    const caseCours = ligneHeure.querySelector(`td[data-j="${jour}"]`);
+                    if (caseCours) {
+                        caseCours.classList.add('cours-actuel');
+                    }
+                }
+            }
+            
+            document.getElementById('info-temps').innerText = "Nous sommes le " + maintenant.toLocaleDateString() + " à " + heure + "h";
+        }
+
+        // Lancer la vérification au démarrage
+        mettreAJourPlanning();
+        // Vérifier toutes les minutes
+        setInterval(mettreAJourPlanning, 60000);
+    </script>
 </body>
 </html>
+
