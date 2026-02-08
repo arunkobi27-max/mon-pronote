@@ -1,89 +1,178 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
 <head>
     <meta charset="UTF-8">
-    <title>Connexion Pronote</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scolarité Connect - RAKURUPAN Arunjan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-    body { 
-        font-family: 'Segoe UI', sans-serif; 
-        /* On ajoute l'image de fond ici */
-        background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-        background-size: cover; /* L'image couvre tout l'écran */
-        background-position: center;
-        background-attachment: fixed;
-        margin: 0;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+        /* --- VARIABLES & THEMES --- */
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent: #6366f1;
+            --sub-text: #94a3b8;
+            --loader-bg: #0f172a;
+        }
 
-    .login-card { 
-        background: rgba(255, 255, 255, 0.95); /* Fond blanc un peu transparent */
-        color: #333; 
-        padding: 40px; 
-        border-radius: 20px; 
-        box-shadow: 0 15px 35px rgba(0,0,0,0.5); 
-        width: 300px;
-    }
+        body.light-mode {
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --sub-text: #64748b;
+            --loader-bg: #f1f5f9;
+        }
 
-    h2 { color: #2c3e50; margin-bottom: 20px; }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-color);
+            margin: 0; padding: 20px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh;
+            transition: background-color 0.4s, color 0.4s;
+            overflow-x: hidden;
+        }
 
-    input { 
-        display: block; 
-        width: 100%; 
-        margin: 15px 0; 
-        padding: 12px; 
-        border: 1px solid #ddd; 
-        border-radius: 8px; 
-        box-sizing: border-box; /* Pour que le padding ne dépasse pas */
-    }
+        /* --- ÉCRAN DE CHARGEMENT (SPLASH SCREEN) --- */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: var(--loader-bg);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 1000; transition: opacity 0.6s ease;
+        }
+        .spinner {
+            width: 50px; height: 50px; border: 5px solid rgba(99, 102, 241, 0.2);
+            border-top: 5px solid var(--accent); border-radius: 50%;
+            animation: spin 1s linear infinite; margin-bottom: 20px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        #loader.fade-out { opacity: 0; pointer-events: none; }
 
-    button { 
-        background: #27ae60; 
-        color: white; 
-        border: none; 
-        padding: 12px; 
-        width: 100%; 
-        border-radius: 8px; 
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer; 
-        transition: 0.3s;
-    }
+        /* --- INTERFACE UTILISATEUR --- */
+        .theme-switch {
+            position: absolute; top: 20px; right: 20px;
+            background: var(--card-bg); border: 1px solid var(--accent);
+            padding: 10px; border-radius: 50px; cursor: pointer; font-size: 1.2em;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s; z-index: 10;
+        }
 
-    button:hover { background: #2ecc71; transform: scale(1.02); }
-</style>
+        .user-header { text-align: center; margin-bottom: 40px; }
+        .user-avatar { 
+            width: 90px; height: 90px; border-radius: 50%; 
+            border: 3px solid var(--accent); margin-bottom: 10px;
+            object-fit: cover; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        h1 { margin: 0; font-size: 1.6em; color: var(--accent); letter-spacing: 0.5px; }
+        .sub-title { color: var(--sub-text); font-size: 0.9em; margin-top: 5px; }
+
+        /* --- GRILLE DU MENU --- */
+        .menu-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 18px; width: 100%; max-width: 500px;
+        }
+
+        .menu-item {
+            background: var(--card-bg); padding: 25px 15px; border-radius: 22px;
+            text-align: center; text-decoration: none; color: var(--text-color);
+            font-weight: 600; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255,255,255,0.05);
+            display: flex; flex-direction: column; align-items: center; gap: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .menu-item:hover {
+            transform: translateY(-8px); border-color: var(--accent);
+            box-shadow: 0 12px 24px rgba(99, 102, 241, 0.2);
+        }
+
+        .icon { font-size: 2.3em; }
+
+        /* Bordures colorées des sections */
+        .m-emploi { border-bottom: 5px solid #6366f1; }
+        .m-notes { border-bottom: 5px solid #10b981; }
+        .m-devoirs { border-bottom: 5px solid #f59e0b; }
+        .m-agenda { border-bottom: 5px solid #fb7185; }
+        .m-profil { grid-column: span 2; border-bottom: 5px solid #a855f7; }
+        
+        .m-logout { 
+            grid-column: span 2; border: none;
+            background: rgba(239, 68, 68, 0.1); color: #ef4444; 
+            margin-top: 10px; border-bottom: 5px solid #ef4444;
+            cursor: pointer; font-family: 'Poppins', sans-serif;
+        }
+        .m-logout:hover { background: rgba(239, 68, 68, 0.2); }
+
+    </style>
 </head>
-<body>
+<body id="body">
 
-    <div class="login-card">
-        <h2>Espace Élève</h2>
-        <input type="text" id="user" placeholder="Identifiant">
-        <input type="password" id="pass" placeholder="Mot de passe">
-        <button onclick="verifier()">Se connecter</button>
-        <p id="erreur" style="color: red;"></p>
+    <div id="loader">
+        <div class="spinner"></div>
+        <p style="font-weight: 600; color: var(--accent);">Scolarité Connect</p>
+    </div>
+
+    <button class="theme-switch" onclick="toggleTheme()" id="theme-btn">🌙</button>
+
+    <div class="user-header">
+        <img src="https://via.placeholder.com/90" alt="Avatar" class="user-avatar">
+        <h1>RAKURUPAN Arunjan</h1>
+        <p class="sub-title">Élève de 3ème • Collège George Sand</p>
+    </div>
+
+    <div class="menu-grid">
+        <a href="emploi.html" class="menu-item m-emploi"><span class="icon">📅</span> Emploi</a>
+        <a href="notes.html" class="menu-item m-notes"><span class="icon">📊</span> Notes</a>
+        <a href="devoirs.html" class="menu-item m-devoirs"><span class="icon">📝</span> Devoirs</a>
+        <a href="agenda.html" class="menu-item m-agenda"><span class="icon">🗓️</span> Agenda</a>
+        <a href="profil.html" class="menu-item m-profil"><span class="icon">👤</span> Mon Profil Étudiant</a>
+        
+        <button onclick="logout()" class="menu-item m-logout">
+            <span class="icon" style="font-size: 1.5em;">🚪</span> Déconnexion
+        </button>
     </div>
 
     <script>
-        function verifier() {
-            // On récupère ce que l'utilisateur a écrit
-            var nom = document.getElementById("user").value;
-            var code = document.getElementById("pass").value;
+        // --- GESTION DU LOADER ---
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('fade-out');
+            }, 1200); // Temps d'affichage du loader
+        });
 
-            // ON VÉRIFIE ICI (Identifiant: Arunjan / Mot de passe: 11022011)
-            if (nom == "Arunjan" && code == "11022011") {
-                // Si c'est bon, on va vers le menu
-                window.location.href = "menu.html";
+        // --- GESTION DU THÈME ---
+        function toggleTheme() {
+            const body = document.getElementById('body');
+            const btn = document.getElementById('theme-btn');
+            body.classList.toggle('light-mode');
+            
+            if (body.classList.contains('light-mode')) {
+                btn.innerText = "☀️";
+                localStorage.setItem('theme', 'light');
             } else {
-                // Si c'est faux, on affiche un message
-                document.getElementById("erreur").innerText = "Identifiant ou mot de passe faux !";
+                btn.innerText = "🌙";
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Charger le thème sauvegardé
+        if (localStorage.getItem('theme') === 'light') {
+            document.getElementById('body').classList.add('light-mode');
+            document.getElementById('theme-btn').innerText = "☀️";
+        }
+
+        // --- DÉCONNEXION ---
+        function logout() {
+            if(confirm("Voulez-vous fermer votre session ?")) {
+                document.getElementById('loader').classList.remove('fade-out');
+                setTimeout(() => {
+                    window.location.href = "about:blank";
+                }, 600);
             }
         }
     </script>
-
 </body>
-
 </html>
+
 
