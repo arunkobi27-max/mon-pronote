@@ -30,6 +30,7 @@
             text-align: center;
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
         }
 
         .logo { font-size: 3em; margin-bottom: 10px; display: block; }
@@ -68,12 +69,46 @@
 
         .btn-login:hover { transform: scale(1.02); background: #4f46e5; }
 
+        /* Lien Mot de passe oublié */
+        .forgot-pass {
+            display: block;
+            margin-top: 15px;
+            font-size: 0.8em;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .forgot-pass:hover { color: var(--accent); }
+
         #error-msg { color: #ef4444; font-size: 0.8em; margin-top: 15px; display: none; }
+
+        /* Style de l'alerte rigolote */
+        .funny-overlay {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--card-bg);
+            border-radius: 25px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 5;
+        }
     </style>
 </head>
 <body>
 
     <div class="login-card">
+        <div id="funny-alert" class="funny-overlay">
+            <span style="font-size: 3em;">🤨</span>
+            <p style="font-weight: 600; margin-top: 15px;">Bah alors Arunjan ?</p>
+            <p style="font-size: 0.85em; color: #94a3b8;">C'est ton propre site et tu oublies déjà le code ? C'est 1234, note-le quelque part !</p>
+            <button class="btn-login" onclick="hideFunny()">Oups, merci !</button>
+        </div>
+
         <span class="logo">🎓</span>
         <h2>Scolarité Connect</h2>
         
@@ -89,6 +124,8 @@
 
         <button class="btn-login" onclick="checkLogin()">Se connecter</button>
 
+        <span class="forgot-pass" onclick="showFunny()">Mot de passe oublié ?</span>
+
         <p id="error-msg">Identifiants incorrects. Réessaie !</p>
     </div>
 
@@ -97,18 +134,16 @@
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
 
-            // --- TES IDENTIFIANTS ICI ---
+            // Identifiants
             const correctUser = "Arunjan";
             const correctPass = "1234"; 
 
             if (user === correctUser && pass === correctPass) {
-                // Sauvegarde de la session (basique)
                 localStorage.setItem('isLoggedIn', 'true');
                 window.location.href = "menu.html";
             } else {
                 const error = document.getElementById('error-msg');
                 error.style.display = 'block';
-                // Animation de secousse
                 document.querySelector('.login-card').animate([
                     { transform: 'translateX(-5px)' },
                     { transform: 'translateX(5px)' },
@@ -116,8 +151,17 @@
                 ], { duration: 200, iterations: 2 });
             }
         }
+
+        function showFunny() {
+            document.getElementById('funny-alert').style.display = 'flex';
+        }
+
+        function hideFunny() {
+            document.getElementById('funny-alert').style.display = 'none';
+        }
     </script>
 </body>
 </html>
+
 
 
