@@ -1,77 +1,140 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
 <head>
     <meta charset="UTF-8">
-    <title>Mes Devoirs</title>
+    <title>Mes Devoirs - Progression</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f0f2f5; padding: 20px; text-align: center; }
-        .container { max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 15px; shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; }
-        
-        /* Style de la liste de devoirs */
-        .liste-devoirs { text-align: left; list-style: none; padding: 0; }
-        .devoir-item { 
-            display: flex; 
-            align-items: center; 
-            padding: 15px; 
-            border-bottom: 1px solid #eee;
-            font-size: 1.1em;
-        }
-        
-        /* La case à cocher */
-        input[type="checkbox"] { margin-right: 15px; transform: scale(1.5); cursor: pointer; }
-        
-        /* Quand on coche, le texte devient gris et barré */
-        input[type="checkbox"]:checked + span {
-            text-decoration: line-through;
-            color: #bdc3c7;
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent: #6366f1;
+            --done: #10b981;
+            --urgent: #ef4444;
         }
 
-        .matiere { font-weight: bold; min-width: 100px; display: inline-block; }
-        .date { font-size: 0.8em; color: #e74c3c; margin-left: auto; }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-color);
+            margin: 0; padding: 20px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* --- BARRE DE PROGRESSION --- */
+        .progress-container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: sticky; top: 10px; z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .progress-info { display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: 600; }
         
-        .btn-retour { background: #34495e; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-bottom: 20px; }
+        .progress-bar-bg {
+            width: 100%; height: 12px;
+            background: #334155; border-radius: 10px; overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            width: 0%; height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--done));
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 15px var(--done);
+        }
+
+        /* --- LE RESTE DU STYLE --- */
+        .header-nav { width: 100%; max-width: 800px; margin-bottom: 20px; }
+        .btn-retour { background: var(--accent); color: white; border: none; padding: 10px 25px; border-radius: 50px; cursor: pointer; text-decoration: none; font-weight: 600; }
+
+        .devoirs-list { width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 15px; }
+        .date-group { margin-top: 10px; font-weight: 600; color: #94a3b8; font-size: 0.9em; }
+
+        .devoir-card {
+            background: var(--card-bg); border-radius: 15px; padding: 18px;
+            display: flex; align-items: center; border-left: 6px solid var(--m-color);
+            transition: 0.3s; cursor: pointer;
+        }
+
+        .urgent-mode { border: 2px solid var(--urgent) !important; animation: blink 2s infinite; }
+        @keyframes blink { 50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.4); } }
+
+        .checkbox { width: 26px; height: 26px; border: 2px solid #475569; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 15px; }
+        
+        .devoir-card.completed { opacity: 0.4; filter: grayscale(0.8); animation: none; }
+        .devoir-card.completed .checkbox { background: var(--done); border-color: var(--done); }
+        .devoir-card.completed .checkbox::after { content: "✓"; color: white; font-weight: bold; }
+        .devoir-card.completed .task-desc { text-decoration: line-through; }
+
+        .m-name { font-weight: 600; font-size: 0.85em; color: var(--m-color); }
+        .task-desc { display: block; margin-top: 4px; font-size: 1.05em; }
+
+        /* Couleurs */
+        .maths { --m-color: #92d050; } .francais { --m-color: #deeaf6; }
+        .anglais { --m-color: #d99594; } .histoire { --m-color: #adb9ca; }
     </style>
 </head>
 <body>
 
-    <button class="btn-retour" onclick="window.location.href='menu.html'">⬅ Retour au Menu</button>
-
-    <div class="container">
-        <h1>📝 Devoirs à faire</h1>
-        
-        <ul class="liste-devoirs">
-            <li class="devoir-item">
-                <input type="checkbox">
-                <span class="matiere">MATHS :</span>
-                <span>Exercice 12 p. 45</span>
-                <span class="date">Pour demain</span>
-            </li>
-            
-            <li class="devoir-item">
-                <input type="checkbox">
-                <span class="matiere">FRANÇAIS :</span>
-                <span>Lire le chapitre 3</span>
-                <span class="date">Pour mardi</span>
-            </li>
-            
-            <li class="devoir-item">
-                <input type="checkbox">
-                <span class="matiere">ANGLAIS :</span>
-                <span>Apprendre le vocabulaire</span>
-                <span class="date">Pour jeudi</span>
-            </li>
-
-            <li class="devoir-item">
-                <input type="checkbox">
-                <span class="matiere">SVT :</span>
-                <span>Dessiner la cellule</span>
-                <span class="date">Pour vendredi</span>
-            </li>
-        </ul>
+    <div class="header-nav">
+        <a href="menu.html" class="btn-retour">⬅ MENU</a>
     </div>
 
-</body>
+    <div class="progress-container">
+        <div class="progress-info">
+            <span>Progression des devoirs</span>
+            <span id="progress-text">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+    </div>
 
+    <div class="devoirs-list">
+        <div class="date-group" style="color: var(--urgent);">⚡ PRIORITÉ : AUJOURD'HUI</div>
+        <div class="devoir-card anglais urgent-mode" onclick="toggleTask(this)">
+            <div class="checkbox"></div>
+            <div class="devoir-info"><span class="m-name">ANGLAIS LV1</span><span class="task-desc">Contrôle de fin de séquence</span></div>
+        </div>
+
+        <div class="date-group">📅 POUR DEMAIN</div>
+        <div class="devoir-card francais" onclick="toggleTask(this)">
+            <div class="checkbox"></div>
+            <div class="devoir-info"><span class="m-name">FRANCAIS</span><span class="task-desc">Bilan séquence la Parole</span></div>
+        </div>
+        <div class="devoir-card maths" onclick="toggleTask(this)">
+            <div class="checkbox"></div>
+            <div class="devoir-info"><span class="m-name">MATHEMATIQUES</span><span class="task-desc">Ex 28 et 31 p. 251</span></div>
+        </div>
+
+        <div class="date-group">🗓️ PLUS TARD</div>
+        <div class="devoir-card histoire" onclick="toggleTask(this)">
+            <div class="checkbox"></div>
+            <div class="devoir-info"><span class="m-name">HISTOIRE-GÉO</span><span class="task-desc">DM Famille Adoner</span></div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTask(card) {
+            card.classList.toggle('completed');
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const total = document.querySelectorAll('.devoir-card').length;
+            const completed = document.querySelectorAll('.devoir-card.completed').length;
+            const percentage = Math.round((completed / total) * 100);
+            
+            document.getElementById('progress-fill').style.width = percentage + "%";
+            document.getElementById('progress-text').innerText = percentage + "%";
+        }
+    </script>
+</body>
 </html>
+
