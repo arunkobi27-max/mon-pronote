@@ -2,14 +2,22 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Réglages - Thème Personnalisé</title>
+    <title>Réglages - Thème & Mode</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
+            /* Variables par défaut (Mode Sombre) */
             --bg-color: #0f172a;
             --card-bg: #1e293b;
             --text-color: #f8fafc;
-            --accent: #6366f1; /* Couleur par défaut */
+            --accent: #6366f1;
+        }
+
+        /* Variables Mode Clair */
+        body.light-mode {
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
         }
 
         body { 
@@ -18,118 +26,113 @@
             color: var(--text-color);
             margin: 0; padding: 20px;
             display: flex; flex-direction: column; align-items: center;
+            transition: 0.3s;
         }
-
-        .header-nav { width: 100%; max-width: 500px; margin-bottom: 30px; }
-        .btn-retour { 
-            background: var(--accent); color: white; border: none; 
-            padding: 10px 25px; border-radius: 50px; cursor: pointer; 
-            text-decoration: none; font-weight: 600; transition: 0.3s;
-        }
-
-        h2 { margin-bottom: 10px; color: var(--accent); }
-        p { color: #94a3b8; font-size: 0.9em; margin-bottom: 30px; }
 
         .settings-card {
             background: var(--card-bg);
-            width: 100%;
-            max-width: 500px;
-            padding: 25px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
-            text-align: center;
+            width: 100%; max-width: 500px;
+            padding: 25px; border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center; margin-top: 20px;
         }
 
-        .theme-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-top: 20px;
+        /* Le Switch Mode Jour/Nuit */
+        .mode-switch {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(128, 128, 128, 0.1);
+            border-radius: 12px;
+            margin-bottom: 25px;
         }
+
+        .switch {
+            position: relative; display: inline-block;
+            width: 50px; height: 26px;
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider {
+            position: absolute; cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ccc; transition: .4s; border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute; content: "";
+            height: 18px; width: 18px; left: 4px; bottom: 4px;
+            background-color: white; transition: .4s; border-radius: 50%;
+        }
+
+        input:checked + .slider { background-color: var(--accent); }
+        input:checked + .slider:before { transform: translateX(24px); }
 
         .color-circle {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
+            width: 40px; height: 40px; border-radius: 50%;
+            display: inline-block; margin: 5px; cursor: pointer;
             border: 3px solid transparent;
-            transition: 0.3s;
         }
+        .color-circle.active { border-color: var(--text-color); }
 
-        .color-circle:hover { transform: scale(1.1); }
-        .color-circle.active { border-color: white; transform: scale(1.1); }
-
-        /* Couleurs au choix */
-        .blue { background: #6366f1; }
-        .purple { background: #a855f7; }
-        .pink { background: #ec4899; }
-        .red { background: #ef4444; }
-        .orange { background: #f59e0b; }
-        .green { background: #10b981; }
-        .cyan { background: #06b6d4; }
-        .white { background: #f8fafc; }
-
-        .preview-box {
-            margin-top: 30px;
-            padding: 15px;
-            border-radius: 12px;
-            background: var(--accent);
-            color: white;
-            font-weight: 600;
-            transition: 0.3s;
-        }
     </style>
 </head>
 <body>
 
-    <div class="header-nav">
-        <a href="menu.html" class="btn-retour">⬅ MENU</a>
-    </div>
+    <a href="menu.html" style="color: var(--accent); text-decoration: none; font-weight: 600;">⬅ RETOUR AU MENU</a>
 
     <h2>⚙ RÉGLAGES</h2>
-    <p>Personnalise l'apparence de ton application</p>
 
     <div class="settings-card">
-        <span>Couleur de l'accent</span>
-        
-        <div class="theme-grid">
-            <div class="color-circle blue active" onclick="changeTheme('#6366f1', this)"></div>
-            <div class="color-circle purple" onclick="changeTheme('#a855f7', this)"></div>
-            <div class="color-circle pink" onclick="changeTheme('#ec4899', this)"></div>
-            <div class="color-circle red" onclick="changeTheme('#ef4444', this)"></div>
-            <div class="color-circle orange" onclick="changeTheme('#f59e0b', this)"></div>
-            <div class="color-circle green" onclick="changeTheme('#10b981', this)"></div>
-            <div class="color-circle cyan" onclick="changeTheme('#06b6d4', this)"></div>
-            <div class="color-circle white" onclick="changeTheme('#94a3b8', this)"></div>
+        <div class="mode-switch">
+            <span>☀️ Mode Jour / 🌙 Nuit</span>
+            <label class="switch">
+                <input type="checkbox" id="modeCheckbox" onclick="toggleMode()">
+                <span class="slider"></span>
+            </label>
         </div>
 
-        <div class="preview-box" id="preview">Aperçu du bouton</div>
+        <p>Couleur de l'accent</p>
+        <div id="colorPicker">
+            <div class="color-circle" style="background: #6366f1;" onclick="changeColor('#6366f1')"></div>
+            <div class="color-circle" style="background: #ec4899;" onclick="changeColor('#ec4899')"></div>
+            <div class="color-circle" style="background: #10b981;" onclick="changeColor('#10b981')"></div>
+            <div class="color-circle" style="background: #f59e0b;" onclick="changeColor('#f59e0b')"></div>
+        </div>
     </div>
 
     <script>
-        function changeTheme(color, element) {
-            // Appliquer la couleur à la page actuelle
-            document.documentElement.style.setProperty('--accent', color);
-            
-            // Modifier l'aperçu
-            document.getElementById('preview').style.background = color;
-
-            // Gérer les cercles actifs
-            document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('active'));
-            element.classList.add('active');
-
-            // SAUVEGARDER la couleur pour les autres pages
-            localStorage.setItem('themeColor', color);
-            
-            alert("Thème mis à jour !");
+        // FONCTION MODE JOUR/NUIT
+        function toggleMode() {
+            const isChecked = document.getElementById('modeCheckbox').checked;
+            if (isChecked) {
+                document.body.classList.add('light-mode');
+                localStorage.setItem('themeMode', 'light');
+            } else {
+                document.body.classList.remove('light-mode');
+                localStorage.setItem('themeMode', 'dark');
+            }
         }
 
-        // Charger la couleur au démarrage
+        // FONCTION COULEUR
+        function changeColor(color) {
+            document.documentElement.style.setProperty('--accent', color);
+            localStorage.setItem('themeColor', color);
+        }
+
+        // CHARGEMENT DES PRÉFÉRENCES
         window.onload = () => {
-            const savedColor = localStorage.getItem('themeColor');
-            if (savedColor) {
-                document.documentElement.style.setProperty('--accent', savedColor);
-                document.getElementById('preview').style.background = savedColor;
+            // Charger la couleur
+            const color = localStorage.getItem('themeColor');
+            if (color) document.documentElement.style.setProperty('--accent', color);
+
+            // Charger le mode
+            const mode = localStorage.getItem('themeMode');
+            if (mode === 'light') {
+                document.body.classList.add('light-mode');
+                document.getElementById('modeCheckbox').checked = true;
             }
         };
     </script>
