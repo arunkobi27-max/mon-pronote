@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Mes Notes - Scolarité Connect</title>
+    <title>Mes Notes - Style Moderne</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
@@ -11,7 +11,7 @@
             --card-bg: #1e293b;
             --text-color: #f8fafc;
             --accent: #6366f1;
-            --success: #10b981;
+            --gold: #fbbf24;
         }
 
         body { 
@@ -22,22 +22,32 @@
             display: flex; flex-direction: column; align-items: center;
         }
 
-        .header-nav { display: flex; gap: 15px; margin-bottom: 25px; }
+        /* En-tête avec boutons */
+        .header-nav { 
+            display: flex; 
+            justify-content: space-between; 
+            width: 100%; 
+            max-width: 1100px; 
+            margin-bottom: 30px; 
+        }
 
         .btn { 
             padding: 12px 25px; border-radius: 50px; cursor: pointer; 
             text-decoration: none; font-weight: 600; border: none; transition: 0.3s;
+            font-size: 0.9em;
         }
-        .btn-retour { background: var(--accent); color: white; }
-        .btn-pdf { background: var(--success); color: white; }
+        .btn-retour { background: var(--accent); color: white; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
+        .btn-pdf { background: #10b981; color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
+        .btn:hover { transform: scale(1.05); opacity: 0.9; }
 
-        h2 { margin-bottom: 10px; color: #818cf8; }
-        .moyenne-generale { font-size: 1.5em; font-weight: 600; margin-bottom: 30px; color: #fbbf24; }
+        .title-section { text-align: center; margin-bottom: 40px; }
+        h1 { font-size: 1.8em; margin: 0; color: #818cf8; letter-spacing: 1px; }
+        .moyenne-generale { font-size: 2.2em; font-weight: 600; color: var(--gold); margin-top: 10px; text-shadow: 0 0 20px rgba(251, 191, 36, 0.3); }
 
-        /* Grille des matières */
-        .notes-container {
+        /* Grille des Notes */
+        .notes-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 20px;
             width: 100%;
             max-width: 1100px;
@@ -45,125 +55,162 @@
 
         .matiere-card {
             background: var(--card-bg);
-            border-radius: 15px;
+            border-radius: 20px;
             padding: 20px;
-            border-left: 6px solid var(--matiere-color);
-            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
-        .matiere-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        /* L'indicateur de couleur sur le côté */
+        .matiere-card::before {
+            content: "";
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 8px;
+            background-color: var(--matiere-color);
+        }
 
-        .matiere-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .matiere-name { font-weight: 600; font-size: 1.1em; }
-        .moyenne-matiere { background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 8px; font-weight: bold; }
+        .matiere-card:hover, .matiere-card.active {
+            transform: translateY(-10px);
+            border-color: var(--matiere-color);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px var(--matiere-color);
+        }
 
-        /* Liste des notes cachées */
-        .details-notes { display: none; font-size: 0.85em; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; }
-        .matiere-card.active .details-notes { display: block; }
+        .matiere-info { display: flex; justify-content: space-between; align-items: center; }
+        .matiere-name { font-weight: 600; font-size: 1.1em; letter-spacing: 0.5px; }
+        .moyenne-val { font-size: 1.4em; font-weight: 600; color: var(--matiere-color); }
 
-        .note-item { display: flex; justify-content: space-between; margin: 5px 0; color: #94a3b8; }
-        .valeur-note { color: var(--text-color); font-weight: 600; }
+        /* Détails des notes cachés */
+        .details-list {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
 
+        .matiere-card.active .details-list { display: block; }
+
+        .note-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            color: #94a3b8;
+        }
+        .note-val { color: var(--text-color); font-weight: 600; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
 
     <div class="header-nav">
         <a href="menu.html" class="btn btn-retour">⬅ MENU</a>
-        <button onclick="genererPDF()" class="btn btn-pdf">📥 TÉLÉCHARGER LE BULLETIN</button>
+        <button onclick="telechargerBulletin()" class="btn btn-pdf">📥 TÉLÉCHARGER PDF</button>
     </div>
 
-    <h2>RÉSULTATS TRIMESTRE 2</h2>
-    <div class="moyenne-generale">Moyenne Générale : 13,01 / 20</div>
+    <div class="title-section">
+        <h1>RÉSULTATS TRIMESTRE 2</h1>
+        <div class="moyenne-generale">13,01 / 20</div>
+    </div>
 
-    <div class="notes-container" id="bulletin">
-        <div class="matiere-card active" style="--matiere-color: #92d050;" onclick="this.classList.toggle('active')">
-            <div class="matiere-header">
-                <span class="matiere-name">MATHEMATIQUES</span>
-                <span class="moyenne-matiere">16,45</span>
+    <div class="notes-grid" id="bulletin-content">
+        
+        <div class="matiere-card" style="--matiere-color: #92d050;" onclick="this.classList.toggle('active')">
+            <div class="matiere-info">
+                <span class="matiere-name">MATHÉMATIQUES</span>
+                <span class="moyenne-val">16,45</span>
             </div>
-            <div class="details-notes">
-                <div class="note-item"><span>DS4</span> <span class="valeur-note">17,25/20</span></div>
-                <div class="note-item"><span>Calcul littéral 2</span> <span class="valeur-note">9,25/10</span></div>
-                <div class="note-item"><span>Calcul littéral 1</span> <span class="valeur-note">9,75/10</span></div>
-                <div class="note-item"><span>Interro Stat</span> <span class="valeur-note">14,50/15</span></div>
+            <div class="details-list">
+                <div class="note-row"><span>DS4</span><span class="note-val">17,25/20</span></div>
+                <div class="note-row"><span>Calcul littéral 2</span><span class="note-val">9,25/10</span></div>
+                <div class="note-row"><span>Calcul littéral 1</span><span class="note-val">9,75/10</span></div>
+                <div class="note-row"><span>Interro Stat</span><span class="note-val">14,50/15</span></div>
             </div>
         </div>
 
         <div class="matiere-card" style="--matiere-color: #f4b183;" onclick="this.classList.toggle('active')">
-            <div class="matiere-header">
+            <div class="matiere-info">
                 <span class="matiere-name">ESPAGNOL LV2</span>
-                <span class="moyenne-matiere">17,20</span>
+                <span class="moyenne-val">17,20</span>
             </div>
-            <div class="details-notes">
-                <div class="note-item"><span>Contrôle Janvier</span> <span class="valeur-note">17,00/20</span></div>
-                <div class="note-item"><span>Teatro</span> <span class="valeur-note">5,00/5</span></div>
-                <div class="note-item"><span>Participation</span> <span class="valeur-note">15,00/20</span></div>
+            <div class="details-list">
+                <div class="note-row"><span>Contrôle Janvier</span><span class="note-val">17,00/20</span></div>
+                <div class="note-row"><span>Teatro</span><span class="note-val">5,00/5</span></div>
+                <div class="note-row"><span>Participation</span><span class="note-val">15,00/20</span></div>
             </div>
         </div>
 
         <div class="matiere-card" style="--matiere-color: #a9d18e;" onclick="this.classList.toggle('active')">
-            <div class="matiere-header">
+            <div class="matiere-info">
                 <span class="matiere-name">PHYSIQUE-CHIMIE</span>
-                <span class="moyenne-matiere">17,00</span>
+                <span class="moyenne-val">17,00</span>
             </div>
-            <div class="details-notes">
-                <div class="note-item"><span>Investissement</span> <span class="valeur-note">20,00/20</span></div>
-                <div class="note-item"><span>Contrôle Energie</span> <span class="valeur-note">16,50/20</span></div>
-                <div class="note-item"><span>Note de cahier</span> <span class="valeur-note">20,00/20</span></div>
+            <div class="details-list">
+                <div class="note-row"><span>Investissement</span><span class="note-val">20,00/20</span></div>
+                <div class="note-row"><span>Contrôle Énergie</span><span class="note-val">16,50/20</span></div>
+                <div class="note-row"><span>Note de cahier</span><span class="note-val">20,00/20</span></div>
             </div>
         </div>
 
         <div class="matiere-card" style="--matiere-color: #a8d08d;" onclick="this.classList.toggle('active')">
-            <div class="matiere-header">
+            <div class="matiere-info">
                 <span class="matiere-name">TECHNOLOGIE</span>
-                <span class="moyenne-matiere">15,95</span>
+                <span class="moyenne-val">15,95</span>
             </div>
-            <div class="details-notes">
-                <div class="note-item"><span>Evaluation Gantt</span> <span class="valeur-note">25,00/25</span></div>
-                <div class="note-item"><span>Code Binaire</span> <span class="valeur-note">20,00/20</span></div>
-                <div class="note-item"><span>Brevet Blanc 1</span> <span class="valeur-note">13,00/24</span></div>
+            <div class="details-list">
+                <div class="note-row"><span>Évaluation Gantt</span><span class="note-val">25,00/25</span></div>
+                <div class="note-row"><span>Code Binaire</span><span class="note-val">20,00/20</span></div>
+                <div class="note-row"><span>Brevet Blanc 1</span><span class="note-val">13,00/24</span></div>
             </div>
         </div>
 
         <div class="matiere-card" style="--matiere-color: #adb9ca;" onclick="this.classList.toggle('active')">
-            <div class="matiere-header">
-                <span class="matiere-name">HISTOIRE-GEOGRAPHIE</span>
-                <span class="moyenne-matiere">12,83</span>
+            <div class="matiere-info">
+                <span class="matiere-name">HISTOIRE-GÉOGRAPHIE</span>
+                <span class="moyenne-val">12,83</span>
             </div>
-            <div class="details-notes">
-                <div class="note-item"><span>Travail de groupe</span> <span class="valeur-note">16,50/20</span></div>
-                <div class="note-item"><span>Rédaction 2GM</span> <span class="valeur-note">17,00/20</span></div>
-                <div class="note-item"><span>Brevet Blanc</span> <span class="valeur-note">8,50/20</span></div>
+            <div class="details-list">
+                <div class="note-row"><span>Rédaction 2GM</span><span class="note-val">17,00/20</span></div>
+                <div class="note-row"><span>Brevet Blanc</span><span class="note-val">8,50/20</span></div>
+                <div class="note-row"><span>Travail de groupe</span><span class="note-val">16,50/20</span></div>
             </div>
         </div>
 
         <div class="matiere-card" style="--matiere-color: #d99594;" onclick="this.classList.toggle('active')">
-            <div class="matiere-header">
+            <div class="matiere-info">
                 <span class="matiere-name">ANGLAIS LV1</span>
-                <span class="moyenne-matiere">11,75</span>
+                <span class="moyenne-val">11,75</span>
             </div>
-            <div class="details-notes">
-                <div class="note-item"><span>Test Janvier</span> <span class="valeur-note">12,00/20</span></div>
-                <div class="note-item"><span>Propositions infinitives</span> <span class="valeur-note">10,00/10</span></div>
-                <div class="note-item"><span>Vocabulaire</span> <span class="valeur-note">7,00/10</span></div>
+            <div class="details-list">
+                <div class="note-row"><span>Propositions Infinitives</span><span class="note-val">10,00/10</span></div>
+                <div class="note-row"><span>Vocabulaire</span><span class="note-val">7,00/10</span></div>
+                <div class="note-row"><span>Test</span><span class="note-val">12,00/20</span></div>
             </div>
         </div>
+
     </div>
 
     <script>
-        function genererPDF() {
-            const element = document.getElementById('bulletin');
-            const options = {
+        function telechargerBulletin() {
+            const element = document.getElementById('bulletin-content');
+            const opt = {
                 margin: 10,
                 filename: 'Mon_Bulletin_Notes.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2, backgroundColor: "#0f172a" },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
-            html2pdf().set(options).from(element).save();
+            html2pdf().set(opt).from(element).save();
         }
     </script>
 </body>
 </html>
+
