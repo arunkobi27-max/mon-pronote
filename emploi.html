@@ -1,81 +1,115 @@
 <!DOCTYPE html>
-<html lang="ta">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Emploi du Temps</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Mon Emploi du Temps</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f0f2f5; padding: 20px; }
+        .btn-retour { background: #34495e; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-block; margin-bottom: 20px; }
+        
+        table { width: 100%; border-collapse: collapse; background: white; border: 1px solid #ccc; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: center; height: 50px; font-size: 0.9em; }
+        th { background-color: #f8f9fa; font-weight: normal; }
+        
+        .heure { background-color: #f8f9fa; width: 80px; font-weight: bold; }
+        .pause { background-color: #e9ecef; color: #999; }
+
+        /* Couleurs basées sur ton image */
+        .techno { background-color: #a8d08d; } /* Vert */
+        .maths { background-color: #92d050; } /* Vert vif */
+        .francais { background-color: #deeaf6; } /* Bleu très clair */
+        .histoire { background-color: #adb9ca; } /* Bleu gris */
+        .anglais { background-color: #d99594; } /* Rouge/Rose */
+        .physique { background-color: #a9d18e; } /* Vert moyen */
+        .musique { background-color: #ffe699; } /* Jaune */
+        .espagnol { background-color: #f4b183; } /* Orange/Saumon */
+        .eps { background-color: #e7e6e6; } /* Gris clair */
+        .svt { background-color: #c5e0b4; } /* Vert d'eau */
+        .arts { background-color: #ffd966; } /* Jaune orangé */
+    </style>
 </head>
 <body>
-    <div class="nav-bar">
-        <button onclick="window.location.href='menu.html'">⬅ Retour au menu</button>
-        <h1>Mon Planning Semaine</h1>
-    </div>
 
-    <div class="schedule-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Heure</th>
-                    <th>Lundi</th>
-                    <th>Mardi</th>
-                    <th>Mercredi</th>
-                    <th>Jeudi</th>
-                    <th>Vendredi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="time">08:00</td>
-                    <td class="maths">Mathématiques</td>
-                    <td class="french">Français</td>
-                    <td class="history">Histoire-Géo</td>
-                    <td class="eps">EPS</td>
-                    <td class="maths">Mathématiques</td>
-                </tr>
-                <tr>
-                    <td class="time">09:00</td>
-                    <td class="maths">Mathématiques</td>
-                    <td class="science">SVT</td>
-                    <td class="history">Histoire-Géo</td>
-                    <td class="eps">EPS</td>
-                    <td class="english">Anglais</td>
-                </tr>
-                <tr>
-                    <td class="time">10:00</td>
-                    <td colspan="5" class="break">RÉCRÉATION</td>
-                </tr>
-                <tr>
-                    <td class="time">10:15</td>
-                    <td class="english">Anglais</td>
-                    <td class="maths">Mathématiques</td>
-                    <td class="art">Arts Plastiques</td>
-                    <td class="science">Physique</td>
-                    <td class="french">Français</td>
-                </tr>
-                <tr>
-                    <td class="time">11:15</td>
-                    <td class="french">Français</td>
-                    <td class="english">Anglais</td>
-                    <td class="art">Musique</td>
-                    <td class="science">Physique</td>
-                    <td class="french">Français</td>
-                </tr>
-                <tr>
-                    <td class="time">12:15</td>
-                    <td colspan="5" class="break">DÉJEUNER</td>
-                </tr>
-                <tr>
-                    <td class="time">14:00</td>
-                    <td class="history">Histoire-Géo</td>
-                    <td class="tech">Technologie</td>
-                    <td class="free">LIBRE</td>
-                    <td class="french">Français</td>
-                    <td class="maths">Mathématiques</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <a href="menu.html" class="btn-retour">⬅ Retour au Menu</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>lun. 29 sept.</th>
+                <th>mar. 30 sept.</th>
+                <th>mer. 01 oct.</th>
+                <th>jeu. 02 oct.</th>
+                <th>ven. 03 oct.</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="heure">08h00</td>
+                <td class="techno">TECHNOLOGIE</td>
+                <td class="francais">FRANCAIS</td>
+                <td class="maths">MATHEMATIQUES</td>
+                <td class="maths">MATHEMATIQUES</td>
+                <td class="pause">————</td>
+            </tr>
+            <tr>
+                <td class="heure">09h00</td>
+                <td class="maths">MATHEMATIQUES</td>
+                <td class="techno">TECHNOLOGIE</td>
+                <td class="musique">EDUCATION MUSICALE</td>
+                <td class="francais">FRANCAIS</td>
+                <td class="anglais">ANGLAIS LV1</td>
+            </tr>
+            <tr>
+                <td class="heure">10h10</td>
+                <td class="francais">FRANCAIS</td>
+                <td class="physique">PHYSIQUE-CHIMIE</td>
+                <td class="francais">FRANCAIS</td>
+                <td class="anglais">ANGLAIS LV1</td>
+                <td class="eps">ED.PHYSIQUE & SPORT.</td>
+            </tr>
+            <tr>
+                <td class="heure">11h05</td>
+                <td class="histoire">HISTOIRE-GEOGRAPHIE</td>
+                <td class="maths">MATHEMATIQUES</td>
+                <td class="espagnol">ESPAGNOL LV2</td>
+                <td class="svt">SCIENCES VIE & TERRE</td>
+                <td class="histoire">HISTOIRE-GEOGRAPHIE</td>
+            </tr>
+            <tr>
+                <td class="heure">12h05</td>
+                <td class="pause">————</td>
+                <td class="pause">————</td>
+                <td class="pause">————</td>
+                <td class="pause">————</td>
+                <td class="pause">————</td>
+            </tr>
+            <tr>
+                <td class="heure">13h30</td>
+                <td class="anglais">ANGLAIS LV1</td>
+                <td class="eps">ED.PHYSIQUE & SPORT.</td>
+                <td class="pause">————</td>
+                <td class="espagnol">ESPAGNOL LV2</td>
+                <td class="arts">ARTS PLASTIQUES</td>
+            </tr>
+            <tr>
+                <td class="heure">14h30</td>
+                <td class="francais">FRANCAIS</td>
+                <td class="eps">ED.PHYSIQUE & SPORT.</td>
+                <td class="pause">————</td>
+                <td class="histoire">HISTOIRE-GEOGRAPHIE</td>
+                <td class="histoire">HISTOIRE-GEOGRAPHIE</td>
+            </tr>
+            <tr>
+                <td class="heure">15h35</td>
+                <td class="svt">SCIENCES VIE & TERRE</td>
+                <td class="pause">————</td>
+                <td class="pause">————</td>
+                <td class="pause">————</td>
+                <td class="espagnol">ESPAGNOL LV2</td>
+            </tr>
+        </tbody>
+    </table>
+
 </body>
-
 </html>
