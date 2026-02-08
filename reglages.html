@@ -1,5 +1,24 @@
 <!DOCTYPE html>
 <html lang="fr">
+    <script>
+    // Appliquer le mode et la couleur dès le chargement
+    (function() {
+        const mode = localStorage.getItem('themeMode');
+        const color = localStorage.getItem('themeColor');
+        if (mode === 'light') document.documentElement.classList.add('light-mode');
+        if (color) document.documentElement.style.setProperty('--accent', color);
+    })();
+</script>
+
+<style>
+    /* Ajoute ceci dans ton bloc <style> sur CHAQUE page */
+    .light-mode {
+        --bg-color: #f1f5f9;
+        --card-bg: #ffffff;
+        --text-color: #1e293b;
+    }
+    body { transition: background 0.3s, color 0.3s; }
+</style>
 <head>
     <meta charset="UTF-8">
     <title>Réglages - Thème & Mode</title>
