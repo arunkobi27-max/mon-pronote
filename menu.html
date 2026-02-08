@@ -1,201 +1,36 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <script>
-    // Appliquer le mode et la couleur dès le chargement
-    (function() {
-        const mode = localStorage.getItem('themeMode');
-        const color = localStorage.getItem('themeColor');
-        if (mode === 'light') document.documentElement.classList.add('light-mode');
-        if (color) document.documentElement.style.setProperty('--accent', color);
-    })();
-</script>
-
-<style>
-    /* Ajoute ceci dans ton bloc <style> sur CHAQUE page */
-    .light-mode {
-        --bg-color: #f1f5f9;
-        --card-bg: #ffffff;
-        --text-color: #1e293b;
-    }
-    body { transition: background 0.3s, color 0.3s; }
-</style>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scolarité Connect - Menu Principal</title>
+    <title>Scolarité Connect - Menu</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
     <style>
-        :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-color: #f8fafc;
-            --accent: #6366f1; /* Cette couleur changera via les réglages */
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .header-app {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        h1 {
-            font-size: 1.8em;
-            font-weight: 600;
-            letter-spacing: 3px;
-            margin: 0;
-            color: var(--accent);
-            text-transform: uppercase;
-            text-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
-        }
-
-        .user-welcome {
-            font-size: 0.9em;
-            color: #94a3b8;
-            margin-top: 5px;
-        }
-
-        /* Grille du Menu */
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .menu-item {
-            background: var(--card-bg);
-            padding: 25px 15px;
-            border-radius: 24px;
-            text-decoration: none;
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(10px);
-        }
-
-        /* Effet au survol / clic */
-        .menu-item:hover {
-            transform: translateY(-8px);
-            background: rgba(99, 102, 241, 0.1);
-            border-color: var(--accent);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(99, 102, 241, 0.2);
-        }
-
-        .icon {
-            font-size: 35px;
-            margin-bottom: 12px;
-            filter: drop-shadow(0 0 5px rgba(255,255,255,0.2));
-        }
-
-        .label {
-            font-weight: 600;
-            font-size: 0.85em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Styles spéciaux pour les boutons du bas */
-        .btn-carnet {
-            grid-column: span 1;
-            border-left: 4px solid #2dd4bf; /* Couleur absences */
-        }
-
-        .btn-reglages {
-            grid-column: span 1;
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .full-row {
-            grid-column: span 2;
-            padding: 18px;
-            margin-top: 10px;
-            background: linear-gradient(135deg, var(--card-bg), rgba(99, 102, 241, 0.1));
-        }
-
-        /* Animation d'entrée */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .menu-grid {
-            animation: fadeIn 0.8s ease-out;
-        }
-
+        :root { --bg-color: #0f172a; --card-bg: #1e293b; --text-color: #f8fafc; --accent: #6366f1; }
+        .light-mode { --bg-color: #f1f5f9; --card-bg: #ffffff; --text-color: #1e293b; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-color); color: var(--text-color); margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; transition: 0.3s; }
+        h1 { color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 30px; }
+        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 90%; max-width: 500px; }
+        .menu-item { background: var(--card-bg); padding: 25px; border-radius: 24px; text-decoration: none; color: var(--text-color); display: flex; flex-direction: column; align-items: center; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .menu-item:hover { transform: translateY(-8px); border-color: var(--accent); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .icon { font-size: 35px; margin-bottom: 10px; }
+        .label { font-size: 0.85em; font-weight: 600; text-transform: uppercase; }
+        .full { grid-column: span 2; background: rgba(99, 102, 241, 0.05); }
     </style>
 </head>
 <body>
-
-    <div class="header-app">
-        <h1>Scolarité Connect</h1>
-        <div class="user-welcome">Tableau de bord personnel</div>
-    </div>
-
+    <h1>SCOLARITÉ</h1>
     <div class="menu-grid">
-        <a href="emploi.html" class="menu-item">
-            <div class="icon">📅</div>
-            <div class="label">Planning</div>
-        </a>
-
-        <a href="notes.html" class="menu-item">
-            <div class="icon">📊</div>
-            <div class="label">Notes</div>
-        </a>
-
-        <a href="devoirs.html" class="menu-item">
-            <div class="icon">📝</div>
-            <div class="label">Devoirs</div>
-        </a>
-
-        <a href="agenda.html" class="menu-item">
-            <div class="icon">🗓️</div>
-            <div class="label">Agenda</div>
-        </a>
-
-        <a href="carnet.html" class="menu-item btn-carnet">
-            <div class="icon">📉</div>
-            <div class="label">Carnet</div>
-        </a>
-
-        <a href="reglages.html" class="menu-item btn-reglages">
-            <div class="icon">⚙️</div>
-            <div class="label">Réglages</div>
-        </a>
+        <a href="emploi.html" class="menu-item"><div class="icon">📅</div><div class="label">Planning</div></a>
+        <a href="notes.html" class="menu-item"><div class="icon">📊</div><div class="label">Notes</div></a>
+        <a href="devoirs.html" class="menu-item"><div class="icon">📝</div><div class="label">Devoirs</div></a>
+        <a href="agenda.html" class="menu-item"><div class="icon">🗓️</div><div class="label">Agenda</div></a>
+        <a href="carnet.html" class="menu-item"><div class="icon">📉</div><div class="label">Carnet</div></a>
+        <a href="reglages.html" class="menu-item full"><div class="icon">⚙️</div><div class="label">Réglages</div></a>
     </div>
-
     <script>
-        // Ce script récupère la couleur choisie dans la page Réglages
-        function applySavedTheme() {
-            const savedColor = localStorage.getItem('themeColor');
-            if (savedColor) {
-                document.documentElement.style.setProperty('--accent', savedColor);
-            }
-        }
-
-        // Exécuter au chargement
-        window.onload = applySavedTheme;
+        if (localStorage.getItem('themeMode') === 'light') document.body.classList.add('light-mode');
+        if (localStorage.getItem('themeColor')) document.documentElement.style.setProperty('--accent', localStorage.getItem('themeColor'));
     </script>
 </body>
 </html>
