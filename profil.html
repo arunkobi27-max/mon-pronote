@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon Profil - Scolarité Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent: #6366f1;
+        }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-color);
+            margin: 0; padding: 20px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        .btn-retour { 
+            background: var(--accent); color: white; border: none; padding: 10px 25px; 
+            border-radius: 50px; cursor: pointer; text-decoration: none; 
+            font-weight: 600; align-self: flex-start; margin-bottom: 20px;
+        }
+
+        .profile-card {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 30px;
+            padding: 40px 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .profile-img {
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--accent);
+            margin-bottom: 20px;
+            object-fit: cover;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.03);
+            padding: 15px;
+            border-radius: 15px;
+        }
+
+        .stat-val { display: block; font-size: 1.5em; font-weight: 600; color: #fbbf24; }
+        .stat-label { font-size: 0.8em; color: #94a3b8; }
+
+        .info-list {
+            text-align: left;
+            margin-top: 30px;
+            background: rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .info-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9em; }
+        .info-label { color: #94a3b8; }
+    </style>
+</head>
+<body>
+
+    <a href="menu.html" class="btn-retour">⬅ RETOUR</a>
+
+    <div class="profile-card">
+        <img src="https://via.placeholder.com/120" alt="Arunjan" class="profile-img">
+        <h2 style="margin: 0;">RAKURUPAN Arunjan</h2>
+        <p style="color: var(--accent); font-weight: 600;">Élève en 3ème B</p>
+
+        <div class="stat-grid">
+            <div class="stat-item">
+                <span class="stat-val">13,01</span>
+                <span class="stat-label">Moyenne Générale</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-val">17,20</span>
+                <span class="stat-label">Meilleure Note</span>
+            </div>
+        </div>
+
+        <div class="info-list">
+            <div class="info-row"><span class="info-label">Établissement :</span><span>Collège George Sand</span></div>
+            <div class="info-row"><span class="info-label">Né le :</span><span>15 Mai 2010</span></div>
+            <div class="info-row"><span class="info-label">Statut :</span><span>Demi-pensionnaire</span></div>
+        </div>
+    </div>
+
+</body>
+</html>
