@@ -95,6 +95,10 @@
 <body>
 
     <a href="menu.html" class="btn-retour">⬅ TABLEAU DE BORD</a>
+    <div class="header-nav">
+    <a href="menu.html" class="btn-retour">⬅ TABLEAU DE BORD</a>
+    <button onclick="telechargerPDF()" class="btn-pdf">📥 Télécharger en PDF</button>
+</div>
     <h2>Emploi du temps</h2>
 
     <div class="schedule-grid">
@@ -172,6 +176,25 @@
             }
         }
     </script>
+    <script>
+function telechargerPDF() {
+    // On sélectionne la grille de l'emploi du temps
+    const element = document.querySelector('.schedule-grid');
+    
+    // Options pour le PDF
+    const options = {
+        margin:       10,
+        filename:     'Mon_Emploi_du_Temps.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, backgroundColor: "#0f172a" }, // On garde le fond sombre
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' } // Format paysage
+    };
+
+    // Lancement de la création du PDF
+    html2pdf().set(options).from(element).save();
+}
+</script>
 </body>
 </html>
+
 
